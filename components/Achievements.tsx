@@ -40,6 +40,12 @@ const achievements: Achievement[] = [
     description:
       "Designed a GenAI copilot system for real-time boiler optimization, predictive safety, and weather-based tuning",
   },
+  {
+    title: "Super AI Engineer Season 6",
+    badge: "Level 2",
+    date: "May 2026",
+    description: "",
+  },
 ];
 
 export default function Achievements() {

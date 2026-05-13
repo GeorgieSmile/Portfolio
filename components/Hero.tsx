@@ -25,6 +25,16 @@ function MailIcon() {
   );
 }
 
+function DownloadIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+  );
+}
+
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
@@ -68,6 +78,13 @@ export default function Hero() {
                 className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#262626] bg-[#171717] text-[#e5e5e5] text-sm font-medium hover:border-indigo-500/50 hover:text-indigo-400 transition-colors duration-200"
               >
                 <MailIcon /> Email
+              </a>
+              <a
+                href="/CV_NithidGuntasin.pdf"
+                download
+                className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-indigo-500/40 bg-indigo-500/10 text-indigo-400 text-sm font-medium hover:bg-indigo-500/20 hover:border-indigo-500/60 transition-colors duration-200"
+              >
+                <DownloadIcon /> CV
               </a>
             </div>
           </div>

@@ -29,7 +29,7 @@ export default function Experience() {
               Jan 2026 – May 2026
             </span>
           </div>
-          <ul className="space-y-2.5">
+          <ul className="space-y-2.5 mb-6">
             {bullets.map((item, i) => (
               <li key={i} className="flex gap-3 text-[#a3a3a3] text-sm leading-relaxed">
                 <span className="mt-2 w-1 h-1 rounded-full bg-indigo-500 flex-shrink-0" />
@@ -37,6 +37,32 @@ export default function Experience() {
               </li>
             ))}
           </ul>
+
+          <div className="border-t border-[#262626] pt-5">
+            <p className="text-[#737373] text-xs font-medium uppercase tracking-wider mb-3">
+              Key Results
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="bg-[#1a1a1a] rounded-lg p-4 border border-[#2a2a2a]">
+                <p className="text-[#737373] text-xs mb-2">MOSS-TTS Fine-tuning · CER</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-[#737373] text-lg font-semibold">44.01%</span>
+                  <span className="text-[#404040] text-sm">→</span>
+                  <span className="text-indigo-400 text-lg font-bold">2.75%</span>
+                </div>
+                <p className="text-emerald-500 text-xs mt-1">↓ 93.7% reduction</p>
+              </div>
+              <div className="bg-[#1a1a1a] rounded-lg p-4 border border-[#2a2a2a]">
+                <p className="text-[#737373] text-xs mb-2">Duration Predictor · MAE</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-[#737373] text-lg font-semibold">1.70s</span>
+                  <span className="text-[#404040] text-sm">→</span>
+                  <span className="text-indigo-400 text-lg font-bold">1.09s</span>
+                </div>
+                <p className="text-emerald-500 text-xs mt-1">↓ 35.9% reduction</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
