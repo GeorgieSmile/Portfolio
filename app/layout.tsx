@@ -7,7 +7,7 @@ const geist = Geist({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Nithid Guntasin — AI/ML Engineer",
   description:
-    "Computer Engineering student at SIIT with experience in speech data pipelines, TTS model fine-tuning, and NLP. Co-author of JaiTTS (arXiv). Seeking a full-time AI/ML Engineer position.",
+    "Computer Engineering graduate from SIIT with experience in speech data pipelines, TTS model fine-tuning, and NLP. Co-author of JaiTTS (arXiv). Seeking an AI/ML Engineer role building production-oriented ML systems.",
 };
 
 export default function RootLayout({

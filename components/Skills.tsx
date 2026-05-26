@@ -4,8 +4,8 @@ const groups = [
     label: "Libraries",
     items: [
       "PyTorch",
-      "HuggingFace Transformers",
-      "HF Accelerate",
+      "Hugging Face Transformers",
+      "Hugging Face Accelerate",
       "scikit-learn",
       "NumPy",
       "Pandas",

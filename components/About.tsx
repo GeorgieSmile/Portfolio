@@ -7,13 +7,13 @@ export default function About() {
           About
         </h2>
         <p className="text-[#a3a3a3] text-base md:text-lg leading-relaxed max-w-2xl">
-          Computer Engineering student at SIIT (GPA 3.64/4.00) with hands-on
-          experience in speech data pipeline development and fine-tuning
-          large-scale TTS models. Completed an AI Engineer internship focused on
-          Thai TTS data pipelines and model fine-tuning. Co-author on an arXiv
-          publication in Thai speech synthesis. Experienced in NLP, audio
-          processing, and backend development with FastAPI. Seeking a full-time
-          AI/ML Engineer position upon graduation in 2026.
+          Computer Engineering graduate from SIIT with hands-on experience in
+          machine learning, speech data pipelines, model fine-tuning, and backend
+          development. Completed an AI Engineer internship focused on Thai speech
+          data processing and TTS optimization, including fine-tuning a 1.7B model
+          on 550 hours of speech data. Co-author of an arXiv paper on Thai voice
+          cloning. Seeking an AI/ML Engineer role building reliable
+          production-oriented ML systems.
         </p>
       </div>
     </section>

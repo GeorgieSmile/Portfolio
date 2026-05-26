@@ -1,8 +1,9 @@
 const tags = ["WangchanBERTa", "FastAPI", "Python", "JavaScript"];
 
 const bullets = [
-  "Fine-tuned WangchanBERTa on ~25,000 labeled Thai sentences for 3-class sentiment classification (adapted from 4-class Wisesight dataset), achieving 78% accuracy",
-  "Built an end-to-end NLP system: data collection, model fine-tuning, FastAPI backend, and JavaScript frontend deployment",
+  "Fine-tuned WangchanBERTa on approximately 25,000 labeled Thai sentences for 3-class sentiment classification, achieving 78% accuracy",
+  "Converted a 4-class Wisesight dataset into a 3-class sentiment setup through preprocessing and label mapping",
+  "Built an end-to-end NLP application with model fine-tuning, FastAPI inference API, and JavaScript frontend",
 ];
 
 export default function Projects() {

@@ -44,7 +44,8 @@ const achievements: Achievement[] = [
     title: "Super AI Engineer Season 6",
     badge: "Level 2",
     date: "May 2026",
-    description: "",
+    description:
+      "Developed AI prototypes for real-world use cases, including RAG chatbots, sales forecasting, and CCTV object detection. Applied model development, evaluation, and rapid prototyping skills in hackathon-based projects with tight delivery timelines.",
   },
 ];
 

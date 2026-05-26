@@ -1,6 +1,7 @@
 const contributions = [
-  "Built TTS evaluation interface and constructed test set",
-  "Evaluated audio tokenizers and restoration models",
+  "Developed evaluation interface for TTS model comparison",
+  "Built a long sentence test set for TTS evaluation",
+  "Evaluated audio tokenizers and restoration models for Thai voice cloning",
 ];
 
 export default function Publication() {
@@ -9,7 +10,7 @@ export default function Publication() {
       <div className="max-w-4xl mx-auto px-6">
         <h2 className="text-2xl font-bold text-white mb-10 flex items-center gap-3">
           <span className="w-8 h-px bg-indigo-500 flex-shrink-0" />
-          Publication
+          Research
         </h2>
         <div className="bg-[#171717] border border-[#262626] rounded-xl p-6 md:p-8">
           <div className="mb-4">

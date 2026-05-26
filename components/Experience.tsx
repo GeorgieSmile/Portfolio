@@ -1,10 +1,9 @@
 const bullets = [
-  "Contributed to Thai speech data collection pipeline development",
-  "Built a YouTube audio scraping utility to support TTS training data collection",
-  "Adapted audio processing pipeline (based on Emilia and MOSS-TTS) for Thai speech, covering source separation, speech restoration, VAD segmentation, ASR transcription, and quality control",
-  "Fine-tuned MOSS-TTS (MossTTS Local 1.7B) on 550 hours of Thai speech data, reducing Character Error Rate from 44.01% (pretrained baseline) to 2.75%",
-  "Trained a duration predictor for F5-TTS inference using XLM-RoBERTa with a regression head, improving MAE from 1.7s to 1.09s over the byte-counting baseline, reducing CER from 4.78% to 4.32%",
-  "Read and evaluated TTS research papers to guide technical decisions on model selection, pipeline design, and hyperparameter tuning",
+  "Contributed to a Thai speech data collection and processing pipeline for TTS model development",
+  "Built a YouTube audio scraping utility to support large-scale Thai speech data collection",
+  "Adapted an audio processing pipeline based on Emilia and MOSS-TTS, including source separation, speech restoration, VAD segmentation, ASR transcription, and quality control",
+  "Fine-tuned MOSS-TTS Local 1.7B on 550 hours of Thai speech data, reducing CER from 44.01% to 2.75%",
+  "Trained a duration predictor for F5-TTS inference using XLM-RoBERTa with a regression head, improving MAE from 1.70s to 1.09s and reducing CER from 4.78% to 4.32%",
 ];
 
 export default function Experience() {
