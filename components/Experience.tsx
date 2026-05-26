@@ -11,7 +11,7 @@ const keyResults: KeyResult[] = [
   {
     metric: "CER",
     system: "MOSS-TTS Local 1.7B",
-    evaluated: "Fine-tuned TTS synthesis",
+    evaluated: "Thai fine-tuned TTS model vs. Pretrained Model",
     before: "44.01%",
     after: "2.75%",
     reduction: "↓ 93.7% reduction",
@@ -19,7 +19,7 @@ const keyResults: KeyResult[] = [
   {
     metric: "MAE",
     system: "Duration predictor (XLM-RoBERTa)",
-    evaluated: "Predicted vs. actual utterance duration",
+    evaluated: "Duration predictor model vs. Byte-counting Baseline",
     before: "1.70s",
     after: "1.09s",
     reduction: "↓ 35.9% reduction",
@@ -27,7 +27,7 @@ const keyResults: KeyResult[] = [
   {
     metric: "CER",
     system: "F5-TTS inference",
-    evaluated: "Synthesis quality with duration predictor vs. byte-counting baseline",
+    evaluated: "Synthesis quality with duration predictor vs. Byte-counting Baseline",
     before: "4.78%",
     after: "4.32%",
     reduction: "↓ 9.6% reduction",
