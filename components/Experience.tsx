@@ -1,3 +1,39 @@
+type KeyResult = {
+  metric: string;
+  system: string;
+  evaluated: string;
+  before: string;
+  after: string;
+  reduction: string;
+};
+
+const keyResults: KeyResult[] = [
+  {
+    metric: "CER",
+    system: "MOSS-TTS Local 1.7B",
+    evaluated: "Fine-tuned TTS synthesis",
+    before: "44.01%",
+    after: "2.75%",
+    reduction: "↓ 93.7% reduction",
+  },
+  {
+    metric: "MAE",
+    system: "Duration predictor (XLM-RoBERTa)",
+    evaluated: "Predicted vs. actual utterance duration",
+    before: "1.70s",
+    after: "1.09s",
+    reduction: "↓ 35.9% reduction",
+  },
+  {
+    metric: "CER",
+    system: "F5-TTS inference",
+    evaluated: "Synthesis quality with duration predictor vs. byte-counting baseline",
+    before: "4.78%",
+    after: "4.32%",
+    reduction: "↓ 9.6% reduction",
+  },
+];
+
 const bullets = [
   "Contributed to a Thai speech data collection and processing pipeline for TTS model development",
   "Built a YouTube audio scraping utility to support large-scale Thai speech data collection",
@@ -41,25 +77,25 @@ export default function Experience() {
             <p className="text-[#737373] text-xs font-medium uppercase tracking-wider mb-3">
               Key Results
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="bg-[#1a1a1a] rounded-lg p-4 border border-[#2a2a2a]">
-                <p className="text-[#737373] text-xs mb-2">MOSS-TTS Fine-tuning · CER</p>
-                <div className="flex items-center gap-2">
-                  <span className="text-[#737373] text-lg font-semibold">44.01%</span>
-                  <span className="text-[#404040] text-sm">→</span>
-                  <span className="text-indigo-400 text-lg font-bold">2.75%</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {keyResults.map((r) => (
+                <div
+                  key={`${r.system}-${r.metric}`}
+                  className="bg-[#1a1a1a] rounded-lg p-4 border border-[#2a2a2a] flex flex-col"
+                >
+                  <p className="text-indigo-400/90 text-xs font-medium mb-0.5">
+                    {r.system}
+                  </p>
+                  <p className="text-[#737373] text-xs mb-1">{r.evaluated}</p>
+                  <p className="text-white text-sm font-semibold mb-2">{r.metric}</p>
+                  <div className="flex items-center gap-2 mt-auto">
+                    <span className="text-[#737373] text-lg font-semibold">{r.before}</span>
+                    <span className="text-[#404040] text-sm">→</span>
+                    <span className="text-indigo-400 text-lg font-bold">{r.after}</span>
+                  </div>
+                  <p className="text-emerald-500 text-xs mt-1">{r.reduction}</p>
                 </div>
-                <p className="text-emerald-500 text-xs mt-1">↓ 93.7% reduction</p>
-              </div>
-              <div className="bg-[#1a1a1a] rounded-lg p-4 border border-[#2a2a2a]">
-                <p className="text-[#737373] text-xs mb-2">Duration Predictor · MAE</p>
-                <div className="flex items-center gap-2">
-                  <span className="text-[#737373] text-lg font-semibold">1.70s</span>
-                  <span className="text-[#404040] text-sm">→</span>
-                  <span className="text-indigo-400 text-lg font-bold">1.09s</span>
-                </div>
-                <p className="text-emerald-500 text-xs mt-1">↓ 35.9% reduction</p>
-              </div>
+              ))}
             </div>
           </div>
         </div>
