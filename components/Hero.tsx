@@ -74,7 +74,7 @@ export default function Hero() {
                 <GithubIcon /> GitHub
               </a>
               <a
-                href="https://linkedin.com/in/nithid-guntasin-8abaa1381"
+                href="https://www.linkedin.com/in/nithid-guntasin"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#262626] bg-[#171717] text-[#e5e5e5] text-sm font-medium hover:border-indigo-500/50 hover:text-indigo-400 transition-colors duration-200"
@@ -111,7 +111,7 @@ export default function Hero() {
                   src="/photo.jpg"
                   alt="Nithid Guntasin"
                   fill
-                  className="object-cover object-top"
+                  className="object-cover object-[center_28%] scale-105"
                   priority
                 />
               </div>

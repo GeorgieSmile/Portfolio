@@ -37,8 +37,8 @@ const keyResults: KeyResult[] = [
 const bullets = [
   "Contributed to a Thai speech data collection and processing pipeline for TTS model development",
   "Built a YouTube audio scraping utility to support large-scale Thai speech data collection",
-  "Adapted an audio processing pipeline based on Emilia and MOSS-TTS, including source separation, speech restoration, VAD segmentation, ASR transcription, and quality control",
-  "Fine-tuned MOSS-TTS Local 1.7B on 550 hours of Thai speech data, reducing CER from 44.01% to 2.75%",
+  "Built a Thai speech-processing pipeline integrating source separation, audio restoration, VAD segmentation, ASR transcription, and automated quality checks",
+  "Fine-tuned a 1.7B-parameter MOSS-TTS model on 550 hours of Thai speech, reducing character error rate from 44.01% to 2.75%",
   "Trained a duration predictor for F5-TTS inference using XLM-RoBERTa with a regression head, improving MAE from 1.70s to 1.09s and reducing CER from 4.78% to 4.32%",
 ];
 

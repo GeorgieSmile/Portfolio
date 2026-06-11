@@ -19,7 +19,7 @@ const samples: Sample[] = [
     src: "/audio/prompt_gen1.wav",
     accent: true,
     targetText:
-      "Honda คว้ารางวัล gen z top brand award 2026 และรางวัล best costome design จากงาน motor show 2026",
+      "Honda คว้ารางวัล gen z top brand award 2026 และรางวัล best costume design จากงาน motor show 2026",
   },
   {
     label: "Generated Sample 2",
@@ -27,7 +27,7 @@ const samples: Sample[] = [
     src: "/audio/prompt_gen2.wav",
     accent: true,
     targetText:
-      "พอผมใกล้ทำ Moss TTS version 1 เสร็จ version 2 ก็ใกล้ออกแล้ว",
+      "พอผมใกล้จะทำ Moss TTS version 1 เสร็จ version 2 ก็ใกล้ออกแล้ว",
   },
 ];
 

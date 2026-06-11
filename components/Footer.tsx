@@ -45,7 +45,7 @@ export default function Footer() {
             <GithubIcon />
           </a>
           <a
-            href="https://linkedin.com/in/nithid-guntasin-8abaa1381"
+            href="https://www.linkedin.com/in/nithid-guntasin"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"

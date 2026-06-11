@@ -7,13 +7,14 @@ export default function About() {
           About
         </h2>
         <p className="text-[#a3a3a3] text-base md:text-lg leading-relaxed max-w-2xl">
-          Computer Engineering graduate from SIIT with hands-on experience in
-          machine learning, speech data pipelines, model fine-tuning, and backend
-          development. Completed an AI Engineer internship focused on Thai speech
-          data processing and TTS optimization, including fine-tuning a 1.7B model
-          on 550 hours of speech data. Co-author of an arXiv paper on Thai voice
-          cloning. Seeking an AI/ML Engineer role building reliable
-          production-oriented ML systems.
+          AI/ML Engineer and co-author of a published arXiv paper on Thai voice
+          cloning (JaiTTS, 2026). Computer Engineering graduate from SIIT (GPA
+          3.65/4.00) with production experience in speech AI, model fine-tuning,
+          and end-to-end NLP systems. Proven ability to deliver results — reduced
+          ASR Character Error Rate from 44% to 2.75% during internship at Jasmine
+          Technology Solution. Seeking an AI/ML Engineer role to grow across the
+          full ML lifecycle — from research and experimentation to scalable
+          production deployment.
         </p>
       </div>
     </section>

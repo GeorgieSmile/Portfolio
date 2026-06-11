@@ -32,7 +32,7 @@ export default function Education() {
 
           <div className="flex items-center gap-2 mb-5">
             <span className="px-2.5 py-1 text-xs font-semibold bg-indigo-500/10 text-indigo-400 rounded border border-indigo-500/20">
-              GPA 3.64 / 4.00
+              GPA 3.65 / 4.00
             </span>
           </div>
 

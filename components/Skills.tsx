@@ -15,7 +15,7 @@ const groups = [
     ],
   },
   { label: "Backend", items: ["FastAPI"] },
-  { label: "Databases", items: ["MySQL"] },
+  { label: "Databases", items: ["MySQL", "SQLite", "Pinecone"] },
   {
     label: "Tools",
     items: ["Git", "Docker", "Linux", "Jupyter Notebook", "Google Colab", "Weights & Biases"],
