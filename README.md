@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nithid Guntasin — Portfolio
 
-## Getting Started
+Personal portfolio site for an AI/ML Engineer role. Built with Next.js and Tailwind CSS.
 
-First, run the development server:
+## Live site
+
+[https://portfolio-topaz-kappa-94.vercel.app/](https://portfolio-topaz-kappa-94.vercel.app/)
+
+## Sections
+
+- **Hero** — intro, contact links, CV download
+- **About** — profile summary
+- **Experience** — Jasmine Technology Solution internship and key results
+- **Research** — JaiTTS (arXiv) publication
+- **Voice Cloning Demo** — Thai TTS audio samples
+- **Projects** — Thai Sentiment Analysis web app
+- **Achievements** — hackathons, scholarship, Super AI Engineer camp highlights
+- **Skills** — technical stack
+- **Education** — SIIT, Computer Engineering
+
+## Tech stack
+
+- [Next.js](https://nextjs.org/) 16 (App Router)
+- [React](https://react.dev/) 19
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/) 4
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/              # Next.js app router (layout, page)
+components/       # UI sections (Hero, About, Experience, etc.)
+public/           # Static assets (photo, CV, audio, camp photos)
+  audio/          # Voice cloning demo samples
+  super-ai/       # Super AI Engineer camp photos
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Updating content
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Most site content lives in `components/`. Common updates:
 
-## Deploy on Vercel
+| What to change | File |
+|---|---|
+| Profile / about text | `components/About.tsx` |
+| Work experience | `components/Experience.tsx` |
+| Achievements & camp photos | `components/Achievements.tsx` |
+| Skills | `components/Skills.tsx` |
+| CV file | replace `public/CV_NithidGuntasin.pdf` |
+| Profile photo | replace `public/photo.jpg` |
+| Page title / SEO description | `app/layout.tsx` |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Compatible with [Vercel](https://vercel.com/) and other Next.js hosts. Push to `main` to trigger deployment if CI/CD is connected.
