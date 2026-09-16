@@ -1,5 +1,5 @@
 const groups = [
-  { label: "Programming", items: ["Python"] },
+  { label: "Programming", items: ["Python", "SQL"] },
   {
     label: "Libraries",
     items: [
@@ -12,6 +12,9 @@ const groups = [
       "Librosa",
       "Whisper",
       "yt-dlp",
+      "vLLM",
+      "uv",
+      "OpenCV",
     ],
   },
   { label: "Backend", items: ["FastAPI"] },

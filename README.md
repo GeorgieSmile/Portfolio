@@ -8,13 +8,13 @@ Personal portfolio site for an AI/ML Engineer role. Built with Next.js and Tailw
 
 ## Sections
 
-- **Hero** — intro, contact links, CV download
+- **Hero** — intro, contact links, Resume download
 - **About** — profile summary
 - **Experience** — Jasmine Technology Solution internship and key results
 - **Research** — JaiTTS (arXiv) publication
 - **Voice Cloning Demo** — Thai TTS audio samples
-- **Projects** — Thai Sentiment Analysis web app
-- **Achievements** — hackathons, scholarship, Super AI Engineer camp highlights
+- **Projects** — RAG-based academic chatbot and Thai Sentiment Analysis web app
+- **Achievements** — hackathons, scholarship, and Super AI Engineer Level 3 / Bronze Medal
 - **Skills** — technical stack
 - **Education** — SIIT, Computer Engineering
 
@@ -28,6 +28,7 @@ Personal portfolio site for an AI/ML Engineer role. Built with Next.js and Tailw
 ## Getting started
 
 ```bash
+node --version # Use Node 24 LTS
 npm install
 npm run dev
 ```
@@ -46,7 +47,7 @@ npm start
 ```
 app/              # Next.js app router (layout, page)
 components/       # UI sections (Hero, About, Experience, etc.)
-public/           # Static assets (photo, CV, audio, camp photos)
+public/           # Static assets (photo, Resume, audio, camp photos)
   audio/          # Voice cloning demo samples
   super-ai/       # Super AI Engineer camp photos
 ```
@@ -61,7 +62,7 @@ Most site content lives in `components/`. Common updates:
 | Work experience | `components/Experience.tsx` |
 | Achievements & camp photos | `components/Achievements.tsx` |
 | Skills | `components/Skills.tsx` |
-| CV file | replace `public/CV_NithidGuntasin.pdf` |
+| Resume file | replace `public/Resume_NithidGuntasin.pdf` |
 | Profile photo | replace `public/photo.jpg` |
 | Page title / SEO description | `app/layout.tsx` |
 

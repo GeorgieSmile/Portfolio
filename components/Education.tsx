@@ -34,6 +34,9 @@ export default function Education() {
             <span className="px-2.5 py-1 text-xs font-semibold bg-indigo-500/10 text-indigo-400 rounded border border-indigo-500/20">
               GPA 3.65 / 4.00
             </span>
+            <span className="px-2.5 py-1 text-xs font-semibold bg-indigo-500/10 text-indigo-400 rounded border border-indigo-500/20">
+              First Class Honors
+            </span>
           </div>
 
           <div>

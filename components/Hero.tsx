@@ -61,8 +61,7 @@ export default function Hero() {
               Guntasin
             </h1>
             <p className="text-[#737373] text-base md:text-lg mb-10 max-w-md mx-auto md:mx-0 leading-relaxed">
-              Building intelligent systems at the intersection of NLP, speech
-              synthesis, and machine learning.
+              Building intelligent systems across speech AI, LLM/RAG, and NLP.
             </p>
             <div className="flex gap-3 justify-center md:justify-start flex-wrap">
               <a
@@ -94,11 +93,11 @@ export default function Hero() {
                 <PhoneIcon /> 062-357-4592
               </a>
               <a
-                href="/CV_NithidGuntasin.pdf"
+                href="/Resume_NithidGuntasin.pdf"
                 download
                 className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-indigo-500/40 bg-indigo-500/10 text-indigo-400 text-sm font-medium hover:bg-indigo-500/20 hover:border-indigo-500/60 transition-colors duration-200"
               >
-                <DownloadIcon /> CV
+                <DownloadIcon /> Resume
               </a>
             </div>
           </div>
@@ -111,6 +110,7 @@ export default function Hero() {
                   src="/photo.jpg"
                   alt="Nithid Guntasin"
                   fill
+                  sizes="(min-width: 768px) 18rem, 14rem"
                   className="object-cover object-[center_28%] scale-105"
                   priority
                 />

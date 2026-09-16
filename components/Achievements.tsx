@@ -54,10 +54,10 @@ const achievements: Achievement[] = [
 
 const superAI: Achievement = {
   title: "Super AI Engineer Season 6",
-  badge: "Level 2 (Selected top 157 of 10,457 applicants)",
-  date: "May 2026 – Jun 2026",
+  badge: "Level 3 · Bronze Medal",
+  date: "May 2026 – Sep 2026",
   description:
-    "Developed AI prototypes for real-world use cases, including RAG chatbots, sales forecasting, and CCTV object detection.",
+    "Developed and evaluated AI prototypes under tight hackathon timelines, including RAG chatbots, sales forecasting, and CCTV object detection.",
   highlights: [
     "Won 1st place twice and Judge's Favorite Award across 4 team hackathons.",
     "3rd place in individual Kaggle hackathon (avg. score of 5 competitions).",
