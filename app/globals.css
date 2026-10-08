@@ -1,10 +1,12 @@
 @import "tailwindcss";
 
+/* Font variables are set by next/font in app/layout.tsx. Plex Sans Thai covers Thai glyphs. */
 @theme inline {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: var(--font-plex), var(--font-plex-thai), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-/* Site palette. Use as bg-surface, text-muted, border-line, etc. */
+/* Site palette. Use as bg-surface, text-muted, border-line, text-accent-400, etc. */
 @theme {
   --color-canvas: #0f0f0f;
   --color-surface: #171717;
@@ -16,12 +18,25 @@
   --color-subtle: #8a8a8a;
   --color-muted: #a3a3a3;
   --color-fg: #e5e5e5;
+
+  /* Accent (teal). Change these three to re-theme the site. */
+  --color-accent-300: #5eead4;
+  --color-accent-400: #2dd4bf;
+  --color-accent-500: #14b8a6;
 }
 
 html {
+  /* Dark native controls (audio players, scrollbars) */
+  color-scheme: dark;
   scroll-behavior: smooth;
   /* Keep anchored sections clear of the sticky nav */
   scroll-padding-top: 3.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 ::-webkit-scrollbar {

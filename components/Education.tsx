@@ -11,7 +11,7 @@ export default function Education() {
           {education.badges.map((badge) => (
             <span
               key={badge}
-              className="px-2.5 py-1 text-xs font-semibold bg-indigo-500/10 text-indigo-400 rounded border border-indigo-500/20"
+              className="px-2.5 py-1 text-xs font-semibold bg-accent-500/10 text-accent-400 rounded border border-accent-500/20"
             >
               {badge}
             </span>

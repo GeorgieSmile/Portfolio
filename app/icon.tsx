@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-// Browser-tab icon: "NG" monogram in the site's indigo.
+// Browser-tab icon: "NG" monogram in the site's teal accent.
 export const size = { width: 64, height: 64 };
 export const contentType = "image/png";
 
@@ -14,8 +14,8 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#6366f1",
-          color: "white",
+          background: "#14b8a6",
+          color: "#0f0f0f",
           borderRadius: 14,
           fontSize: 32,
           fontWeight: 700,

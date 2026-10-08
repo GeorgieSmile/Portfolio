@@ -6,7 +6,7 @@ export default function Publication() {
     <Section id="publication" title="Research">
       <Card>
         <div className="mb-4">
-          <span className="inline-block px-2 py-0.5 text-xs font-medium bg-indigo-500/10 text-indigo-400 rounded border border-indigo-500/20">
+          <span className="inline-block px-2 py-0.5 text-xs font-medium bg-accent-500/10 text-accent-400 rounded border border-accent-500/20">
             {publication.badge}
           </span>
         </div>

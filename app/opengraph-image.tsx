@@ -31,7 +31,7 @@ export default async function Image() {
             style={{
               fontSize: 26,
               letterSpacing: 6,
-              color: "#818cf8",
+              color: "#2dd4bf",
               fontWeight: 600,
               marginBottom: 20,
             }}
@@ -54,7 +54,7 @@ export default async function Image() {
             borderRadius: 9999,
             objectFit: "cover",
             objectPosition: "50% 28%",
-            border: "4px solid rgba(99, 102, 241, 0.4)",
+            border: "4px solid rgba(20, 184, 166, 0.4)",
           }}
         />
       </div>

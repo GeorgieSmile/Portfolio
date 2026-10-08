@@ -30,16 +30,21 @@ export type Project = {
   // The first 4 are always shown; any extra sit behind "Show more"
   bullets: string[];
   link?: Link;
+  // Optional flow diagram: each step's tool and what it does
+  pipeline?: { tool: string; step: string }[];
+  results?: Stat[];
 };
 
 export type Image = { src: string; alt: string };
+
+export type Stat = { value: string; label: string };
 
 export type Achievement = {
   title: string;
   badge: string;
   date: string;
   description: string;
-  highlights?: string[];
+  highlights?: Stat[];
 };
 
 export type VoiceSample = {
@@ -55,8 +60,14 @@ export const profile = {
   title: "AI Engineer",
   tagline:
     "Building end-to-end ML systems for Thai speech and text, from data pipelines and model fine-tuning to LLM/RAG applications and evaluation.",
+  // Proof points under the hero tagline; each links to the section with the details
+  highlights: [
+    { value: "44% → 2.75%", label: "Thai TTS error rate (CER)", href: "#experience" },
+    { value: "JaiTTS", label: "Co-author · arXiv 2026", href: "#publication" },
+    { value: "▶ Listen", label: "Thai voice cloning demo", href: "#audio" },
+  ],
   about:
-    "AI Engineer building end-to-end ML systems for Thai speech and text, from data pipelines and model fine-tuning to LLM/RAG applications and evaluation. Currently an AI Engineer (Contract) at the Artificial Intelligence Association of Thailand (AIAT), and previously an AI Engineer Intern at Jasmine Technology Solution, where I fine-tuned a Thai TTS model that cut Character Error Rate from 44% to 2.75%. Co-author of JaiTTS (arXiv, 2026) and a Computer Engineering graduate from SIIT with First Class Honors.",
+    "Currently an AI Engineer (Contract) at the Artificial Intelligence Association of Thailand (AIAT), and previously an AI Engineer Intern at Jasmine Technology Solution, where I fine-tuned a Thai TTS model that cut Character Error Rate from 44% to 2.75%. Co-author of JaiTTS (arXiv, 2026) and a Computer Engineering graduate from SIIT with First Class Honors.",
   siteUrl: "https://portfolio-topaz-kappa-94.vercel.app",
   photo: "/photo.jpg",
   resume: "/Resume_NithidGuntasin.pdf",
@@ -87,8 +98,8 @@ export const jobs: Job[] = [
     bullets: [
       "Built a 6-stage Thai TTS data pipeline that turned 800+ hours of raw audio into a 550-hour training set, covering speech enhancement, diarization and segmentation, quality filtering, transcription and cleaning, speaker-matched prompt pairing, and dataset assembly",
       "Integrated MossFormer2, DiariZen, Silero VAD, DNSMOS/AudioBox, Whisper, vLLM, and WavLM/ECAPA-TDNN models across the pipeline stages",
-      "Fine-tuned MOSS-TTS (1.7B, no prior Thai support) on the 550-hour set, cutting Character Error Rate (CER) from 44.01% to 2.75%",
-      "Trained an XLM-RoBERTa model to predict speech duration for F5-TTS, reducing timing error (MAE) from 1.70s to 1.09s vs. a byte-count baseline and CER from 4.78% to 4.32%",
+      "Fine-tuned MOSS-TTS (1.7B, no prior Thai support) on the 550-hour set",
+      "Trained an XLM-RoBERTa model to predict speech duration for F5-TTS, replacing a byte-count baseline",
       "Made the pipeline restartable from any stage by saving parquet checkpoints, and kept the H100 GPU busy by preparing audio in parallel on CPU and batching clips by length to avoid out-of-memory errors",
       "Developed a YouTube channel audio downloader with yt-dlp, adding resume support, rate limiting, and FLAC export so it could run unattended for large-scale Thai speech collection",
     ],
@@ -135,16 +146,16 @@ export const voiceDemo = {
       accent: false,
     },
     {
-      label: "Generated Sample 1",
-      description: "Voice cloned from the reference above",
+      label: "Thai–English code-switching",
+      description: "Cloned voice reading Thai mixed with English brand names",
       src: "/audio/prompt_gen1.wav",
       accent: true,
       targetText:
         "Honda คว้ารางวัล gen z top brand award 2026 และรางวัล best costume design จากงาน motor show 2026",
     },
     {
-      label: "Generated Sample 2",
-      description: "Second generated output — same reference",
+      label: "Casual conversational Thai",
+      description: "Same reference voice, informal spoken style",
       src: "/audio/prompt_gen2.wav",
       accent: true,
       targetText:
@@ -177,6 +188,19 @@ export const projects: Project[] = [
     role: "Senior Project · Data & AI Lead (team of 4)",
     date: "Aug – Dec 2025",
     tags: ["RAG", "n8n", "Pinecone", "Cohere Rerank", "Gemini 2.5 Flash", "Claude Haiku 4.5"],
+    pipeline: [
+      { tool: "Student query", step: "Question in" },
+      { tool: "Gemini 2.5 Flash", step: "Classify domain" },
+      { tool: "Pinecone", step: "Retrieve chunks" },
+      { tool: "Cohere Rerank", step: "Rerank" },
+      { tool: "Claude Haiku 4.5", step: "Grounded answer" },
+    ],
+    results: [
+      { value: "0.93", label: "Retrieval recall@3" },
+      { value: "0.93", label: "Faithfulness (LLM-judged)" },
+      { value: "0.82", label: "Helpfulness · 20 students" },
+      { value: "฿0.50", label: "LLM cost per query" },
+    ],
     bullets: [
       "Gathered requirements from students and staff, using their feedback to shape the chatbot's features",
       "Owned the knowledge-base ingestion: cleaned, chunked, embedded, and indexed SIIT web pages and staff-provided FAQs across 7 support domains in Pinecone, with domain metadata on every chunk",
@@ -199,17 +223,17 @@ export const projects: Project[] = [
   },
 ];
 
-export const superAI: Achievement & { teamWins: Image[]; campMoments: Image[] } = {
+export const superAI: Achievement & { photos: Image[] } = {
   title: "Super AI Engineer Season 6",
   badge: "Level 3 · Bronze Medal",
   date: "May 2026 – Sep 2026",
   description:
     "Selected for the Level 2 bootcamp (157 of 10,457 applicants) of Thailand's national AI talent program, run by AIAT with Thailand's Ministry of Higher Education; advanced to Level 3 and earned a Bronze Medal for overall performance across Levels 2 and 3. Developed and evaluated AI prototypes under tight hackathon timelines, including RAG chatbots, sales forecasting, and CCTV object detection.",
   highlights: [
-    "Won 1st place twice and Judge's Favorite across 4 team hackathons.",
-    "Ranked 3rd in an individual Kaggle competition (average of 5 tasks).",
+    { value: "2× 1st", label: "Team hackathon wins, plus Judge's Favorite (4 hackathons)" },
+    { value: "3rd", label: "Individual Kaggle competition (average of 5 tasks)" },
   ],
-  teamWins: [
+  photos: [
     {
       src: "/super-ai/SPAI6-Hack2.jpg",
       alt: "Team winning 1st place at the Edge-AI for Intelligence Transport System hackathon",
@@ -221,16 +245,6 @@ export const superAI: Achievement & { teamWins: Image[]; campMoments: Image[] } 
     {
       src: "/super-ai/SPAI6-Hack3.jpg",
       alt: "Team receiving Judge's Favorite Award at the WellSense AIoT hackathon",
-    },
-  ],
-  campMoments: [
-    {
-      src: "/super-ai/SPAI6-SoloHack.jpg",
-      alt: "Presenting at Super AI Engineer camp",
-    },
-    {
-      src: "/super-ai/SPAI6-SoloHack2.jpg",
-      alt: "Award recognition for strong individual hackathon performance at camp",
     },
   ],
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type GalleryImage = {
   src: string;
@@ -21,7 +21,7 @@ function CampPhoto({
     <button
       type="button"
       onClick={onClick}
-      className={`group relative rounded-lg overflow-hidden border border-line-strong bg-raised cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${className}`}
+      className={`group relative rounded-lg overflow-hidden border border-line-strong bg-raised cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 ${className}`}
       aria-label={`Enlarge: ${img.alt}`}
     >
       <Image
@@ -29,25 +29,23 @@ function CampPhoto({
         alt={img.alt}
         fill
         sizes="(max-width: 640px) 80vw, (max-width: 1024px) 50vw, 33vw"
-        className="object-cover transition-transform duration-200 group-hover:scale-105"
+        className="object-cover motion-safe:transition-transform duration-200 motion-safe:group-hover:scale-105"
       />
       <span className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-      <span className="absolute bottom-2 right-2 px-2 py-1 text-[10px] font-medium text-white/90 bg-black/50 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="absolute bottom-2 right-2 px-2 py-1 text-xs font-medium text-white/90 bg-black/50 rounded opacity-0 group-hover:opacity-100 transition-opacity">
         Click to enlarge
       </span>
     </button>
   );
 }
 
-export default function CampGallery({
-  teamWins,
-  campMoments,
-}: {
-  teamWins: GalleryImage[];
-  campMoments: GalleryImage[];
-}) {
-  const images = [...teamWins, ...campMoments];
+export default function CampGallery({ images }: { images: GalleryImage[] }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const isOpen = activeIndex !== null;
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  // Thumbnail that opened the lightbox, so focus can return to it on close
+  const openerRef = useRef<HTMLElement | null>(null);
   const active = activeIndex !== null ? images[activeIndex] : null;
 
   const close = () => setActiveIndex(null);
@@ -59,9 +57,22 @@ export default function CampGallery({
     setActiveIndex((i) => (i === null ? null : (i + 1) % images.length));
 
   useEffect(() => {
-    if (activeIndex === null) return;
+    if (!isOpen) return;
 
     const onKey = (e: KeyboardEvent) => {
+      // Keep Tab focus inside the dialog
+      if (e.key === "Tab" && dialogRef.current) {
+        const focusable = dialogRef.current.querySelectorAll<HTMLElement>("button:not([tabindex='-1'])");
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
       if (e.key === "Escape") close();
       if (e.key === "ArrowLeft") {
         setActiveIndex((i) =>
@@ -73,15 +84,20 @@ export default function CampGallery({
       }
     };
 
+    closeRef.current?.focus();
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", onKey);
+      openerRef.current?.focus();
     };
-  }, [activeIndex, images.length]);
+  }, [isOpen, images.length]);
 
-  const openAt = (index: number) => setActiveIndex(index);
+  const openAt = (index: number) => {
+    openerRef.current = document.activeElement as HTMLElement | null;
+    setActiveIndex(index);
+  };
 
   return (
     <>
@@ -97,8 +113,8 @@ export default function CampGallery({
         ))}
       </div>
 
-      <div className="hidden sm:grid grid-cols-3 gap-3 mb-3">
-        {teamWins.map((img, i) => (
+      <div className="hidden sm:grid grid-cols-3 gap-3">
+        {images.map((img, i) => (
           <CampPhoto
             key={img.src}
             img={img}
@@ -108,19 +124,9 @@ export default function CampGallery({
         ))}
       </div>
 
-      <div className="hidden sm:grid grid-cols-2 gap-3 max-w-[66%] mx-auto">
-        {campMoments.map((img, i) => (
-          <CampPhoto
-            key={img.src}
-            img={img}
-            onClick={() => openAt(teamWins.length + i)}
-            className="aspect-[4/3]"
-          />
-        ))}
-      </div>
-
       {active && activeIndex !== null && (
         <div
+          ref={dialogRef}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8"
           role="dialog"
           aria-modal="true"
@@ -129,11 +135,13 @@ export default function CampGallery({
           <button
             type="button"
             className="absolute inset-0 bg-black/90 cursor-zoom-out"
+            tabIndex={-1}
             onClick={close}
             aria-label="Close enlarged photo"
           />
 
           <button
+            ref={closeRef}
             type="button"
             onClick={close}
             className="absolute top-4 right-4 z-10 p-2 text-white/80 hover:text-white bg-black/40 hover:bg-black/60 rounded-lg transition-colors"

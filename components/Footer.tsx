@@ -8,10 +8,10 @@ export default function Footer() {
         <div className="text-center sm:text-left">
           <p className="text-white text-sm font-semibold mb-2">Get in touch</p>
           <div className="flex flex-col gap-1 text-sm">
-            <a href={`mailto:${profile.email}`} className="text-muted hover:text-indigo-400 transition-colors">
+            <a href={`mailto:${profile.email}`} className="text-muted hover:text-accent-400 transition-colors">
               {profile.email}
             </a>
-            <a href={profile.phone.href} className="text-muted hover:text-indigo-400 transition-colors">
+            <a href={profile.phone.href} className="text-muted hover:text-accent-400 transition-colors">
               {profile.phone.display}
             </a>
           </div>
