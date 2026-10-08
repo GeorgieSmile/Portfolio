@@ -1,6 +1,6 @@
 # Nithid Guntasin — Portfolio
 
-Personal portfolio site for an AI/ML Engineer role. Built with Next.js and Tailwind CSS.
+Personal portfolio site for an AI Engineer role. Built with Next.js and Tailwind CSS.
 
 ## Live site
 
@@ -8,15 +8,17 @@ Personal portfolio site for an AI/ML Engineer role. Built with Next.js and Tailw
 
 ## Sections
 
-- **Hero** — intro, contact links, Resume download
+- **Nav** — sticky header with links to each section
+- **Hero** — intro, Resume download, GitHub / LinkedIn / Email links
 - **About** — profile summary
-- **Experience** — Jasmine Technology Solution internship and key results
-- **Research** — JaiTTS (arXiv) publication
+- **Experience** — AIAT contract role and Jasmine Technology Solution internship with key results
 - **Voice Cloning Demo** — Thai TTS audio samples
-- **Projects** — RAG-based academic chatbot and Thai Sentiment Analysis web app
-- **Achievements** — hackathons, scholarship, and Super AI Engineer Level 3 / Bronze Medal
+- **Research** — JaiTTS (arXiv) publication
+- **Projects** — Scrybe RAG academic chatbot and Thai Sentiment Analysis web app
+- **Achievements** — Super AI Engineer Season 6 (Level 3 / Bronze Medal) and hackathons
 - **Skills** — technical stack
-- **Education** — SIIT, Computer Engineering
+- **Education** — SIIT, Computer Engineering, scholarship
+- **Footer** — contact details (email, phone)
 
 ## Tech stack
 
@@ -45,8 +47,11 @@ npm start
 ## Project structure
 
 ```
-app/              # Next.js app router (layout, page)
+app/              # Next.js app router (layout, page, social preview image)
 components/       # UI sections (Hero, About, Experience, etc.)
+  ui.tsx          # Shared Section, Card, BulletList, ... building blocks
+  icons.tsx       # Shared SVG icons
+data/profile.ts   # All site content (text, links, metrics)
 public/           # Static assets (photo, Resume, audio, camp photos)
   audio/          # Voice cloning demo samples
   super-ai/       # Super AI Engineer camp photos
@@ -54,17 +59,18 @@ public/           # Static assets (photo, Resume, audio, camp photos)
 
 ## Updating content
 
-Most site content lives in `components/`. Common updates:
+Almost all text lives in `data/profile.ts`, so a CV update is usually a one-file edit.
 
-| What to change | File |
+| What to change | Where |
 |---|---|
-| Profile / about text | `components/About.tsx` |
-| Work experience | `components/Experience.tsx` |
-| Achievements & camp photos | `components/Achievements.tsx` |
-| Skills | `components/Skills.tsx` |
+| Name, title, tagline, about, contact links | `profile` in `data/profile.ts` |
+| Work experience & key results | `jobs` in `data/profile.ts` |
+| Research, projects, achievements, skills, education | matching export in `data/profile.ts` |
+| Camp photos | `superAI` in `data/profile.ts` + files in `public/super-ai/` |
+| Colours | `@theme` block in `app/globals.css` |
 | Resume file | replace `public/Resume_NithidGuntasin.pdf` |
-| Profile photo | replace `public/photo.jpg` |
-| Page title / SEO description | `app/layout.tsx` |
+| Profile photo | replace `public/photo.jpg` (also used in the social preview image) |
+| Page title / SEO description | built from `profile` in `app/layout.tsx` |
 
 ## Deploy
 

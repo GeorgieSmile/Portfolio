@@ -1,10 +1,25 @@
 import type { Metadata } from "next";
+import { profile } from "@/data/profile";
 import "./globals.css";
 
+const title = `${profile.name} — ${profile.title}`;
+const description = `${profile.tagline} Co-author of JaiTTS (arXiv, 2026).`;
+
 export const metadata: Metadata = {
-  title: "Nithid Guntasin — AI/ML Engineer",
-  description:
-    "AI/ML Engineer and co-author of JaiTTS (arXiv, 2026). SIIT Computer Engineering graduate with First Class Honors and experience across speech AI, LLM/RAG, and NLP. Reduced ASR CER from 44% to 2.75% at Jasmine Technology Solution.",
+  metadataBase: new URL(profile.siteUrl),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: "/",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
 };
 
 export default function RootLayout({
@@ -12,7 +27,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className="bg-[#0f0f0f] text-[#e5e5e5] antialiased">
+      <body className="bg-canvas text-fg antialiased">
         {children}
       </body>
     </html>

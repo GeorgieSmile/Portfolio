@@ -4,20 +4,36 @@
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+/* Site palette. Use as bg-surface, text-muted, border-line, etc. */
+@theme {
+  --color-canvas: #0f0f0f;
+  --color-surface: #171717;
+  --color-raised: #1c1c1c;
+  --color-divider: #1a1a1a;
+  --color-line: #262626;
+  --color-line-strong: #333333;
+  --color-faint: #404040;
+  --color-subtle: #8a8a8a;
+  --color-muted: #a3a3a3;
+  --color-fg: #e5e5e5;
+}
+
 html {
   scroll-behavior: smooth;
+  /* Keep anchored sections clear of the sticky nav */
+  scroll-padding-top: 3.5rem;
 }
 
 ::-webkit-scrollbar {
   width: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f0f0f;
+  background: var(--color-canvas);
 }
 ::-webkit-scrollbar-thumb {
-  background: #262626;
+  background: var(--color-line);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #404040;
+  background: var(--color-faint);
 }

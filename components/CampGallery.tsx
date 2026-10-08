@@ -21,14 +21,14 @@ function CampPhoto({
     <button
       type="button"
       onClick={onClick}
-      className={`group relative rounded-lg overflow-hidden border border-[#333] bg-[#1a1a1a] cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${className}`}
+      className={`group relative rounded-lg overflow-hidden border border-line-strong bg-raised cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${className}`}
       aria-label={`Enlarge: ${img.alt}`}
     >
       <Image
         src={img.src}
         alt={img.alt}
         fill
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        sizes="(max-width: 640px) 80vw, (max-width: 1024px) 50vw, 33vw"
         className="object-cover transition-transform duration-200 group-hover:scale-105"
       />
       <span className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
@@ -85,18 +85,30 @@ export default function CampGallery({
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+      {/* Phones: one swipeable row; the next photo peeks in as a swipe hint */}
+      <div className="sm:hidden -mx-6 px-6 flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-px-6 [scrollbar-width:none]">
+        {images.map((img, i) => (
+          <CampPhoto
+            key={img.src}
+            img={img}
+            onClick={() => openAt(i)}
+            className="w-[80%] flex-shrink-0 snap-start aspect-[4/3]"
+          />
+        ))}
+      </div>
+
+      <div className="hidden sm:grid grid-cols-3 gap-3 mb-3">
         {teamWins.map((img, i) => (
           <CampPhoto
             key={img.src}
             img={img}
             onClick={() => openAt(i)}
-            className="aspect-[4/3] sm:aspect-[3/2]"
+            className="aspect-[3/2]"
           />
         ))}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:max-w-[66%] sm:mx-auto">
+      <div className="hidden sm:grid grid-cols-2 gap-3 max-w-[66%] mx-auto">
         {campMoments.map((img, i) => (
           <CampPhoto
             key={img.src}
@@ -168,11 +180,11 @@ export default function CampGallery({
                 priority
               />
             </div>
-            <p className="text-[#a3a3a3] text-sm text-center max-w-2xl px-4">
+            <p className="text-muted text-sm text-center max-w-2xl px-4">
               {active.alt}
             </p>
             {images.length > 1 && (
-              <p className="text-[#737373] text-xs">
+              <p className="text-subtle text-xs">
                 {activeIndex + 1} / {images.length}
               </p>
             )}
