@@ -84,8 +84,8 @@ export const jobs: Job[] = [
     date: "Aug 2026 – Present",
     tags: ["Web scraping", "Data cleaning", "Record deduplication", "KPI design", "Dashboard"],
     bullets: [
-      "Built 8 web scrapers to collect Thai public data on community innovation, local businesses, and cultural sites for a government agency's provincial development dashboard",
-      "Cleaned and standardized records from 8 sources, merging records that described the same person, business, or product across websites so each was counted once",
+      "Built 10 web scrapers to collect Thai public data on community innovation, local businesses, and cultural sites for a government agency's provincial development dashboard",
+      "Cleaned and standardized records from 10 sources, merging records that described the same person, business, or product across websites so each was counted once",
       "Designed the KPI definitions and calculations, reporting only the KPIs the collected data could reliably support",
       "Built and tested the dashboard section showing the KPIs by province, with drill-down to the underlying records",
     ],
