@@ -1,76 +1,58 @@
 import type { ReactNode } from "react";
-import type { Stat } from "@/data/profile";
 
+// Every section reads the same way: its heading in columns 1–3, its content from column 4.
+// Inside the content, `Split` adds one second line at column 7.
 export function Section({
   id,
   title,
-  subtitle,
+  intro,
+  className = "",
   children,
 }: {
   id: string;
-  title: string;
-  subtitle?: string;
+  title: ReactNode;
+  intro?: ReactNode;
+  className?: string;
   children: ReactNode;
 }) {
   return (
-    <section id={id} className="py-20 border-t border-divider">
-      <div className="max-w-4xl mx-auto px-6">
-        <h2
-          className={`text-2xl font-bold text-white flex items-center gap-3 ${
-            subtitle ? "mb-2" : "mb-10"
-          }`}
-        >
-          <span className="w-8 h-px bg-accent-500 flex-shrink-0" />
+    <section id={id} className={`frame py-[clamp(56px,6vw,88px)] ${className}`}>
+      <div className="grid-12 gap-y-8">
+        <h2 data-reveal className="heading col-span-12 lg:col-span-3 lg:self-start">
           {title}
         </h2>
-        {subtitle && <p className="text-subtle text-sm mb-10 ml-11">{subtitle}</p>}
-        {children}
+        <div className="col-span-12 lg:col-[4/span_9] min-w-0">
+          {intro && (
+            <div data-reveal style={{ "--i": 1 } as React.CSSProperties} className="text-lead max-w-[48ch] mb-12">
+              {intro}
+            </div>
+          )}
+          {children}
+        </div>
       </div>
     </section>
   );
 }
 
-export function Card({
-  className = "",
-  children,
-}: {
-  className?: string;
-  children: ReactNode;
-}) {
+// Two columns inside a section's content, on the page grid: 3 columns of labels or facts, 6 of detail.
+export function Split({ side, children, className = "" }: { side: ReactNode; children: ReactNode; className?: string }) {
   return (
-    <div className={`bg-surface border border-line rounded-xl p-6 md:p-8 ${className}`}>
-      {children}
-    </div>
-  );
-}
-
-// Title, accent subtitle and date row used at the top of most cards.
-export function CardHeader({
-  title,
-  subtitle,
-  date,
-}: {
-  title: string;
-  subtitle?: string;
-  date: string;
-}) {
-  return (
-    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1.5 mb-5">
-      <div>
-        <h3 className="text-white font-semibold text-base md:text-lg">{title}</h3>
-        {subtitle && <p className="text-accent-400 text-sm mt-0.5">{subtitle}</p>}
+    <div className={`grid gap-y-6 lg:grid-cols-9 lg:gap-x-[var(--gutter)] ${className}`}>
+      <div data-reveal className="lg:col-span-3 min-w-0">
+        {side}
       </div>
-      <span className="text-subtle text-sm whitespace-nowrap">{date}</span>
+      <div data-reveal style={{ "--i": 1 } as React.CSSProperties} className="lg:col-span-6 min-w-0">
+        {children}
+      </div>
     </div>
   );
 }
 
 export function BulletList({ items, className = "" }: { items: string[]; className?: string }) {
   return (
-    <ul className={`space-y-2.5 ${className}`}>
+    <ul className={`list-disc pl-5 marker:text-muted space-y-3 text-body max-w-[62ch] ${className}`}>
       {items.map((item) => (
-        <li key={item} className="flex gap-3 text-muted text-sm leading-relaxed">
-          <span className="mt-2 w-1 h-1 rounded-full bg-accent-500 flex-shrink-0" />
+        <li key={item} className="pl-1">
           {item}
         </li>
       ))}
@@ -87,17 +69,8 @@ export function ExpandableBullets({ items, visible }: { items: string[]; visible
       <BulletList items={shown} />
       {hidden.length > 0 && (
         <details className="group mt-3">
-          <summary className="inline-flex items-center gap-1.5 text-accent-400 text-sm font-medium cursor-pointer select-none list-none hover:text-accent-300 transition-colors [&::-webkit-details-marker]:hidden">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="w-4 h-4 transition-transform group-open:rotate-90"
-            >
-              <path d="m9 18 6-6-6-6" />
-            </svg>
-            <span className="group-open:hidden">Show {hidden.length} more</span>
+          <summary className="press link inline-block text-body cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden">
+            <span className="group-open:hidden">Show {hidden.length} more details</span>
             <span className="hidden group-open:inline">Show less</span>
           </summary>
           <BulletList items={hidden} className="mt-3" />
@@ -107,60 +80,28 @@ export function ExpandableBullets({ items, visible }: { items: string[]; visible
   );
 }
 
-// Phones show the first PHONE_TAG_LIMIT tags plus a "+N" chip; wider screens show all.
-const PHONE_TAG_LIMIT = 5;
-const tagClass =
-  "px-2.5 py-1 text-xs font-medium bg-raised text-muted rounded-md border border-line-strong";
-
-export function Tags({ items, className = "" }: { items: string[]; className?: string }) {
-  const extra = items.length - PHONE_TAG_LIMIT;
-  return (
-    <div className={`flex flex-wrap gap-2 ${className}`}>
-      {items.map((tag, i) => (
-        <span key={tag} className={`${tagClass} ${i >= PHONE_TAG_LIMIT ? "hidden sm:inline" : ""}`}>
-          {tag}
-        </span>
-      ))}
-      {extra > 0 && (
-        <span className={`${tagClass} sm:hidden`} title={items.slice(PHONE_TAG_LIMIT).join(", ")}>
-          +{extra}
-        </span>
-      )}
-    </div>
-  );
-}
-
-// Big mono number over a short label. `className` sets the grid columns.
-export function StatTiles({ items, className = "" }: { items: Stat[]; className?: string }) {
-  return (
-    <div className={`grid gap-3 ${className}`}>
-      {items.map((s) => (
-        <div key={s.label} className="bg-raised rounded-lg p-3 border border-line">
-          <p className="font-mono text-accent-400 text-lg font-semibold">{s.value}</p>
-          <p className="text-subtle text-xs mt-0.5">{s.label}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-export function Label({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return (
-    <p className={`text-subtle text-xs font-medium uppercase tracking-wider mb-3 ${className}`}>
-      {children}
-    </p>
-  );
-}
-
 export function TextLink({ href, children }: { href: string; children: ReactNode }) {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex items-center gap-1 text-accent-400 text-sm font-medium hover:text-accent-300 transition-colors"
-    >
+    <a href={href} target="_blank" rel="noopener noreferrer" className="link press inline-block text-body">
       {children} →
     </a>
+  );
+}
+
+// A voice drawn from its own samples: one bar per slice of the clip, mirrored around the middle.
+export function WaveformSvg({ peaks, className = "" }: { peaks: number[]; className?: string }) {
+  const step = 4;
+  return (
+    <svg
+      viewBox={`0 0 ${peaks.length * step} 100`}
+      preserveAspectRatio="none"
+      aria-hidden
+      className={className}
+    >
+      {peaks.map((p, i) => {
+        const h = Math.max(3, p * 96);
+        return <rect key={i} x={i * step + 0.8} y={50 - h / 2} width={2.4} height={h} fill="currentColor" />;
+      })}
+    </svg>
   );
 }

@@ -22,39 +22,29 @@ export default async function Image() {
           alignItems: "center",
           gap: 72,
           padding: "0 96px",
-          background: "#0f0f0f",
-          color: "#e5e5e5",
+          background: "#0a0d14",
+          color: "#e9edf3",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-          <div
-            style={{
-              fontSize: 26,
-              letterSpacing: 6,
-              color: "#2dd4bf",
-              fontWeight: 600,
-              marginBottom: 20,
-            }}
-          >
-            {profile.title.toUpperCase()}
-          </div>
-          <div style={{ fontSize: 84, fontWeight: 700, color: "white", lineHeight: 1.05 }}>
+          <div style={{ fontSize: 76, fontWeight: 400, letterSpacing: -2, lineHeight: 1.1 }}>
             {profile.name}
           </div>
-          <div style={{ fontSize: 30, color: "#a3a3a3", marginTop: 28, lineHeight: 1.4 }}>
+          <div style={{ fontSize: 76, fontWeight: 400, letterSpacing: -2, lineHeight: 1.1, color: "#9aa3b2" }}>
+            {profile.title}
+          </div>
+          <div style={{ fontSize: 30, color: "#9aa3b2", marginTop: 36, lineHeight: 1.4 }}>
             {profile.tagline}
           </div>
         </div>
         <img
           src={photoSrc}
           alt=""
-          width={300}
-          height={300}
+          width={330}
+          height={440}
           style={{
-            borderRadius: 9999,
             objectFit: "cover",
-            objectPosition: "50% 28%",
-            border: "4px solid rgba(20, 184, 166, 0.4)",
+            objectPosition: "50% 22%",
           }}
         />
       </div>

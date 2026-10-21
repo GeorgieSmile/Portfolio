@@ -1,6 +1,5 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
 import Experience from "@/components/Experience";
 import Publication from "@/components/Publication";
 import AudioSamples from "@/components/AudioSamples";
@@ -16,9 +15,8 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <About />
-        <Experience />
         <AudioSamples />
+        <Experience />
         <Publication />
         <Projects />
         <Achievements />

@@ -1,40 +1,52 @@
 import CampGallery from "@/components/CampGallery";
 import { achievements, superAI } from "@/data/profile";
-import { Card, CardHeader, Label, Section, StatTiles } from "@/components/ui";
+import { Section, Split } from "@/components/ui";
 
 export default function Achievements() {
   return (
     <Section id="achievements" title="Achievements">
-      <Card>
-        <CardHeader title={superAI.title} subtitle={superAI.badge} date={superAI.date} />
+      <Split
+        side={
+          <>
+            <h3 className="text-lead">{superAI.title}</h3>
+            <p className="text-body mt-1">{superAI.badge}</p>
+            <p className="text-small text-muted mt-2 tabular">{superAI.date}</p>
+            {superAI.highlights && (
+              <dl className="flex flex-col gap-5 mt-8">
+                {superAI.highlights.map((h) => (
+                  <div key={h.label}>
+                    <dt className="sr-only">{h.label}</dt>
+                    <dd>
+                      <span className="block text-lead tabular">{h.value}</span>
+                      <span className="block text-body mt-1">{h.label}</span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </>
+        }
+      >
+        <p className="text-body max-w-[62ch]">{superAI.description}</p>
+      </Split>
 
-        <p className="text-muted text-sm leading-relaxed">{superAI.description}</p>
+      <div className="mt-12">
+        <CampGallery images={superAI.photos} />
+      </div>
 
-        {superAI.highlights && (
-          <StatTiles items={superAI.highlights} className="grid-cols-1 sm:grid-cols-2 mt-5" />
-        )}
-
-        <div className="mt-6 pt-6 border-t border-line">
-          <Label className="mb-4">Winning Teams</Label>
-          <CampGallery images={superAI.photos} />
-        </div>
-      </Card>
-
-      {/* One list instead of a card grid, so short descriptions don't leave empty boxes */}
-      <Label className="mt-10 mb-1">Other Hackathons</Label>
-      <ul className="divide-y divide-line">
-        {achievements.map((a) => (
-          <li key={a.title} className="py-4">
-            <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5 sm:gap-4">
-              <h3 className="text-white text-sm font-semibold">
-                {a.title} <span className="text-accent-400 font-normal">· {a.badge}</span>
-              </h3>
-              <span className="text-subtle text-xs whitespace-nowrap">{a.date}</span>
-            </div>
-            <p className="text-subtle text-sm leading-relaxed mt-1">{a.description}</p>
-          </li>
-        ))}
-      </ul>
+      <Split className="mt-16" side={<h3 className="text-lead">Other hackathons</h3>}>
+        <ul className="flex flex-col gap-8">
+          {achievements.map((a) => (
+            <li key={a.title}>
+              <h4 className="text-body font-medium">{a.title}</h4>
+              <p className="text-body">
+                {a.badge} <span className="text-small text-muted tabular">· {a.date}</span>
+              </p>
+              <p className="text-body mt-2 max-w-[62ch]">{a.description}</p>
+            </li>
+          ))}
+        </ul>
+      </Split>
     </Section>
   );
 }

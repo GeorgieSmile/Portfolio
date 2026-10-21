@@ -15,9 +15,15 @@ export type Job = {
   title: string;
   company: string;
   date: string;
+  // One plain sentence on what the work was for, shown before the detail
+  summary: string;
   tags?: string[];
   keyResults?: KeyResult[];
-  bullets: string[];
+  // Plain-language meaning of the key-result metrics
+  keyResultsNote?: string;
+  // Either one list, or the same kind of bullets split into labelled groups
+  bullets?: string[];
+  bulletGroups?: { label: string; bullets: string[] }[];
 };
 
 export type Link = { label: string; href: string };
@@ -26,6 +32,8 @@ export type Project = {
   title: string;
   role?: string;
   date: string;
+  // One plain sentence on what the project does, shown before the results
+  summary: string;
   tags: string[];
   // The first 4 are always shown; any extra sit behind "Show more"
   bullets: string[];
@@ -33,6 +41,8 @@ export type Project = {
   // Optional flow diagram: each step's tool and what it does
   pipeline?: { tool: string; step: string }[];
   results?: Stat[];
+  // Plain-language meaning of the result labels
+  resultsNote?: string;
 };
 
 export type Image = { src: string; alt: string };
@@ -62,12 +72,10 @@ export const profile = {
     "Building end-to-end ML systems for Thai speech and text, from data pipelines and model fine-tuning to LLM/RAG applications and evaluation.",
   // Proof points under the hero tagline; each links to the section with the details
   highlights: [
-    { value: "44% → 2.75%", label: "Thai TTS error rate (CER)", href: "#experience" },
+    { value: "44% → 2.75%", label: "Thai text-to-speech error rate (CER), lower is better", href: "#experience" },
     { value: "JaiTTS", label: "Co-author · arXiv 2026", href: "#publication" },
     { value: "▶ Listen", label: "Thai voice cloning demo", href: "#audio" },
   ],
-  about:
-    "Currently an AI Engineer (Contract) at the Artificial Intelligence Association of Thailand (AIAT), and previously an AI Engineer Intern at Jasmine Technology Solution, where I fine-tuned a Thai TTS model that cut Character Error Rate from 44% to 2.75%. Co-author of JaiTTS (arXiv, 2026) and a Computer Engineering graduate from SIIT with First Class Honors.",
   siteUrl: "https://portfolio-topaz-kappa-94.vercel.app",
   photo: "/photo.jpg",
   resume: "/Resume_NithidGuntasin.pdf",
@@ -82,6 +90,7 @@ export const jobs: Job[] = [
     title: "AI Engineer (Contract)",
     company: "Artificial Intelligence Association of Thailand (AIAT)",
     date: "Aug 2026 – Present",
+    summary: "Collecting and cleaning Thai public data for a government agency's provincial development dashboard.",
     tags: ["Web scraping", "Data cleaning", "Record deduplication", "KPI design", "Dashboard"],
     bullets: [
       "Built 10 web scrapers to collect Thai public data on community innovation, local businesses, and cultural sites for a government agency's provincial development dashboard",
@@ -94,15 +103,33 @@ export const jobs: Job[] = [
     title: "AI Engineer Intern",
     company: "Jasmine Technology Solution",
     date: "Jan 2026 – May 2026",
+    summary: "Thai text-to-speech (TTS): built the training data and fine-tuned the models that turn Thai text into spoken Thai.",
     tags: ["MOSS-TTS", "F5-TTS", "XLM-RoBERTa", "Whisper", "vLLM", "DiariZen", "Silero VAD", "yt-dlp"],
-    bullets: [
-      "Built a 6-stage Thai TTS data pipeline that turned 800+ hours of raw audio into a 550-hour training set, covering speech enhancement, diarization and segmentation, quality filtering, transcription and cleaning, speaker-matched prompt pairing, and dataset assembly",
-      "Integrated MossFormer2, DiariZen, Silero VAD, DNSMOS/AudioBox, Whisper, vLLM, and WavLM/ECAPA-TDNN models across the pipeline stages",
-      "Fine-tuned MOSS-TTS (1.7B, no prior Thai support) on the 550-hour set",
-      "Trained an XLM-RoBERTa model to predict speech duration for F5-TTS, replacing a byte-count baseline",
-      "Made the pipeline restartable from any stage by saving parquet checkpoints, and kept the H100 GPU busy by preparing audio in parallel on CPU and batching clips by length to avoid out-of-memory errors",
-      "Developed a YouTube channel audio downloader with yt-dlp, adding resume support, rate limiting, and FLAC export so it could run unattended for large-scale Thai speech collection",
+    bulletGroups: [
+      {
+        label: "Building the training data",
+        bullets: [
+          "Built a 6-stage Thai TTS data pipeline that turned 800+ hours of raw audio into a 550-hour training set, covering speech enhancement, diarization and segmentation, quality filtering, transcription and cleaning, speaker-matched prompt pairing, and dataset assembly",
+          "Integrated MossFormer2, DiariZen, Silero VAD, DNSMOS/AudioBox, Whisper, vLLM, and WavLM/ECAPA-TDNN models across the pipeline stages",
+          "Developed a YouTube channel audio downloader with yt-dlp, adding resume support, rate limiting, and FLAC export so it could run unattended for large-scale Thai speech collection",
+        ],
+      },
+      {
+        label: "Training the models",
+        bullets: [
+          "Fine-tuned MOSS-TTS (1.7B, no prior Thai support) on the 550-hour set",
+          "Trained an XLM-RoBERTa model to predict speech duration for F5-TTS, replacing a byte-count baseline",
+        ],
+      },
+      {
+        label: "Making the pipeline reliable",
+        bullets: [
+          "Made the pipeline restartable from any stage by saving parquet checkpoints, and kept the H100 GPU busy by preparing audio in parallel on CPU and batching clips by length to avoid out-of-memory errors",
+        ],
+      },
     ],
+    keyResultsNote:
+      "Lower is better for all three. CER (character error rate) is the share of characters the speech gets wrong; MAE is the average error, in seconds, of the predicted speech duration.",
     keyResults: [
       {
         metric: "CER",
@@ -136,6 +163,7 @@ export const jobs: Job[] = [
 ];
 
 export const voiceDemo = {
+  instruction: "Listen to the reference voice first, then the two clips the model generated in that same voice.",
   subtitle:
     "Thai TTS — fine-tuned on 550 hours of speech data during internship at Jasmine Technology Solution",
   samples: [
@@ -151,7 +179,7 @@ export const voiceDemo = {
       src: "/audio/prompt_gen1.wav",
       accent: true,
       targetText:
-        "Honda คว้ารางวัล gen z top brand award 2026 และรางวัล best costume design จากงาน motor show 2026",
+        "Honda คว้ารางวัล gen z top brand award 2026 และรางวัล best costume design award จากงาน motor show 2026",
     },
     {
       label: "Casual conversational Thai",
@@ -159,7 +187,7 @@ export const voiceDemo = {
       src: "/audio/prompt_gen2.wav",
       accent: true,
       targetText:
-        "พอผมใกล้จะทำ Moss TTS version 1 เสร็จ version 2 ก็ใกล้ออกแล้ว",
+        "พอผมใกล้จะทำ Moss TTS version 1 เสร็จ version 2 ก็ใกล้จะออกมาแล้ว",
     },
   ] satisfies VoiceSample[],
 };
@@ -187,6 +215,7 @@ export const projects: Project[] = [
     title: "Scrybe: RAG Academic Chatbot",
     role: "Senior Project · Data & AI Lead (team of 4)",
     date: "Aug – Dec 2025",
+    summary: "A chatbot that answers students' questions using SIIT web pages and staff-provided FAQs across 7 support domains.",
     tags: ["RAG", "n8n", "Pinecone", "Cohere Rerank", "Gemini 2.5 Flash", "Claude Haiku 4.5"],
     pipeline: [
       { tool: "Student query", step: "Question in" },
@@ -198,9 +227,11 @@ export const projects: Project[] = [
     results: [
       { value: "0.93", label: "Retrieval recall@3" },
       { value: "0.93", label: "Faithfulness (LLM-judged)" },
-      { value: "0.82", label: "Helpfulness · 20 students" },
+      { value: "0.82", label: "Helpfulness (0–1) · 20 students" },
       { value: "฿0.50", label: "LLM cost per query" },
     ],
+    resultsNote:
+      "Recall@3: how often the right passage is among the top 3 retrieved. Faithfulness: how closely an answer sticks to those passages, scored by an LLM judge. The first three are on a 0–1 scale, higher is better.",
     bullets: [
       "Gathered requirements from students and staff, using their feedback to shape the chatbot's features",
       "Owned the knowledge-base ingestion: cleaned, chunked, embedded, and indexed SIIT web pages and staff-provided FAQs across 7 support domains in Pinecone, with domain metadata on every chunk",
@@ -213,6 +244,7 @@ export const projects: Project[] = [
   {
     title: "Thai Sentiment Analysis Web Application",
     date: "Aug 2025",
+    summary: "A web app that reads the sentiment of Thai text: single sentences, uploaded files or YouTube comments.",
     tags: ["WangchanBERTa", "FastAPI", "Docker Compose", "Nginx"],
     bullets: [
       "Built a Thai sentiment web app with a FastAPI backend, containerized with Docker Compose and Nginx, supporting single-sentence, batch-file (.txt/.csv), and YouTube-comment analysis with per-class probabilities",

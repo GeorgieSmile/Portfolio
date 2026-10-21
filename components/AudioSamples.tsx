@@ -1,35 +1,53 @@
-import { voiceDemo } from "@/data/profile";
-import { Section } from "@/components/ui";
+import { voiceDemo, type VoiceSample } from "@/data/profile";
+import { readWaveform } from "@/lib/waveform";
+import { Section, Split, WaveformSvg } from "@/components/ui";
+import OneAudioAtATime from "@/components/OneAudioAtATime";
+
+// Input against output: the reference voice in the narrow column, the two clones of it in the wide one,
+// each drawn from its own audio.
+function Specimen({ sample }: { sample: VoiceSample }) {
+  const { peaks } = readWaveform(sample.src, 96);
+  return (
+    <figure className="flex flex-col gap-4">
+      <figcaption>
+        <h3 className="text-lead">{sample.label}</h3>
+        <p className="text-small text-muted mt-1">{sample.description}</p>
+      </figcaption>
+      <WaveformSvg
+        peaks={peaks}
+        className={`w-full h-[clamp(72px,6vw,96px)] ${sample.accent ? "text-ink" : "text-muted"}`}
+      />
+      {sample.targetText && (
+        <p lang="th" className="text-body max-w-[48ch]">
+          {sample.targetText}
+        </p>
+      )}
+      <audio controls preload="metadata" src={sample.src} />
+    </figure>
+  );
+}
 
 export default function AudioSamples() {
+  const [reference, ...clones] = voiceDemo.samples;
   return (
-    <Section id="audio" title="Voice Cloning Demo" subtitle={voiceDemo.subtitle}>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {voiceDemo.samples.map((s) => (
-          <div
-            key={s.label}
-            className={`rounded-xl border p-5 flex flex-col gap-3 bg-surface ${
-              s.accent ? "border-accent-500/20" : "border-line"
-            }`}
-          >
-            <div>
-              <p className={`text-sm font-semibold ${s.accent ? "text-accent-400" : "text-white"}`}>
-                {s.label}
-              </p>
-              <p className="text-subtle text-xs mt-0.5">{s.description}</p>
-              {"targetText" in s && (
-                <div className="mt-3 pt-3 border-t border-line">
-                  <p className="text-subtle text-xs font-medium uppercase tracking-wider mb-1.5">
-                    Target Text
-                  </p>
-                  <p lang="th" className="text-muted text-sm leading-relaxed">{s.targetText}</p>
-                </div>
-              )}
-            </div>
-            <audio controls preload="metadata" src={s.src} className="w-full h-10 mt-auto" />
-          </div>
-        ))}
-      </div>
+    <Section
+      id="audio"
+      title="Voice Cloning Demo"
+      intro={
+        <>
+          <p>{voiceDemo.subtitle}</p>
+          <p className="text-body mt-4">{voiceDemo.instruction}</p>
+        </>
+      }
+    >
+      <Split side={<Specimen sample={reference} />}>
+        <div className="flex flex-col gap-12">
+          {clones.map((s) => (
+            <Specimen key={s.src} sample={s} />
+          ))}
+        </div>
+      </Split>
+      <OneAudioAtATime />
     </Section>
   );
 }

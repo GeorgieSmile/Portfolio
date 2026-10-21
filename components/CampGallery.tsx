@@ -8,34 +8,39 @@ type GalleryImage = {
   alt: string;
 };
 
+// The three winning-team photos: a small thumbnail beside its caption on phones, one row of three above that.
+
 function CampPhoto({
   img,
-  className = "",
+  index,
   onClick,
 }: {
   img: GalleryImage;
-  className?: string;
+  index: number;
   onClick: () => void;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`group relative rounded-lg overflow-hidden border border-line-strong bg-raised cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 ${className}`}
-      aria-label={`Enlarge: ${img.alt}`}
-    >
-      <Image
-        src={img.src}
-        alt={img.alt}
-        fill
-        sizes="(max-width: 640px) 80vw, (max-width: 1024px) 50vw, 33vw"
-        className="object-cover motion-safe:transition-transform duration-200 motion-safe:group-hover:scale-105"
-      />
-      <span className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-      <span className="absolute bottom-2 right-2 px-2 py-1 text-xs font-medium text-white/90 bg-black/50 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-        Click to enlarge
-      </span>
-    </button>
+    <figure className="flex gap-4 items-start sm:block">
+      <button
+        type="button"
+        onClick={onClick}
+        data-reveal="shutter"
+        style={{ "--i": index } as React.CSSProperties}
+        className="group relative block w-2/5 shrink-0 sm:w-full aspect-[3/2] overflow-hidden bg-surface cursor-zoom-in"
+        aria-label={`Enlarge: ${img.alt}`}
+      >
+        <Image
+          src={img.src}
+          alt={img.alt}
+          fill
+          // Three photos only: load them with the page so a quick scroll never meets an empty frame
+          loading="eager"
+          sizes="(min-width: 640px) 30vw, 40vw"
+          className="object-cover brightness-[0.85] group-hover:brightness-100"
+        />
+      </button>
+      <figcaption className="text-small text-muted sm:mt-3 max-w-[48ch]">{img.alt}</figcaption>
+    </figure>
   );
 }
 
@@ -101,25 +106,13 @@ export default function CampGallery({ images }: { images: GalleryImage[] }) {
 
   return (
     <>
-      {/* Phones: one swipeable row; the next photo peeks in as a swipe hint */}
-      <div className="sm:hidden -mx-6 px-6 flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-px-6 [scrollbar-width:none]">
+      <div className="grid sm:grid-cols-3 gap-x-[var(--gutter)] gap-y-6 sm:gap-y-10">
         {images.map((img, i) => (
           <CampPhoto
             key={img.src}
             img={img}
+            index={i}
             onClick={() => openAt(i)}
-            className="w-[80%] flex-shrink-0 snap-start aspect-[4/3]"
-          />
-        ))}
-      </div>
-
-      <div className="hidden sm:grid grid-cols-3 gap-3">
-        {images.map((img, i) => (
-          <CampPhoto
-            key={img.src}
-            img={img}
-            onClick={() => openAt(i)}
-            className="aspect-[3/2]"
           />
         ))}
       </div>
@@ -134,7 +127,7 @@ export default function CampGallery({ images }: { images: GalleryImage[] }) {
         >
           <button
             type="button"
-            className="absolute inset-0 bg-black/90 cursor-zoom-out"
+            className="absolute inset-0 bg-bg/95 cursor-zoom-out"
             tabIndex={-1}
             onClick={close}
             aria-label="Close enlarged photo"
@@ -144,7 +137,7 @@ export default function CampGallery({ images }: { images: GalleryImage[] }) {
             ref={closeRef}
             type="button"
             onClick={close}
-            className="absolute top-4 right-4 z-10 p-2 text-white/80 hover:text-white bg-black/40 hover:bg-black/60 rounded-lg transition-colors"
+            className="press absolute top-4 right-4 z-10 p-3 text-ink bg-surface"
             aria-label="Close"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
@@ -157,7 +150,7 @@ export default function CampGallery({ images }: { images: GalleryImage[] }) {
               <button
                 type="button"
                 onClick={showPrev}
-                className="absolute left-2 sm:left-4 z-10 p-2 text-white/80 hover:text-white bg-black/40 hover:bg-black/60 rounded-lg transition-colors"
+                className="press absolute left-2 sm:left-4 z-10 p-3 text-ink bg-surface"
                 aria-label="Previous photo"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
@@ -167,7 +160,7 @@ export default function CampGallery({ images }: { images: GalleryImage[] }) {
               <button
                 type="button"
                 onClick={showNext}
-                className="absolute right-2 sm:right-4 z-10 p-2 text-white/80 hover:text-white bg-black/40 hover:bg-black/60 rounded-lg transition-colors"
+                className="press absolute right-2 sm:right-4 z-10 p-3 text-ink bg-surface"
                 aria-label="Next photo"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
@@ -185,14 +178,14 @@ export default function CampGallery({ images }: { images: GalleryImage[] }) {
                 fill
                 sizes="100vw"
                 className="object-contain"
-                priority
+                preload
               />
             </div>
-            <p className="text-muted text-sm text-center max-w-2xl px-4">
+            <p className="text-small text-ink text-center max-w-2xl px-4">
               {active.alt}
             </p>
             {images.length > 1 && (
-              <p className="text-subtle text-xs">
+              <p className="text-small text-muted tabular">
                 {activeIndex + 1} / {images.length}
               </p>
             )}

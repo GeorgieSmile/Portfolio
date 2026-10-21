@@ -1,51 +1,53 @@
 import { profile } from "@/data/profile";
-import { GithubIcon, LinkedInIcon, MailIcon } from "@/components/icons";
 
+// The close, on the same structure as every section: the heading on the left, the email address
+// as display type from column 4, then a single quiet line.
 export default function Footer() {
+  const [user, domain] = profile.email.split("@");
   return (
-    <footer id="contact" className="py-12 border-t border-divider">
-      <div className="max-w-4xl mx-auto px-6 flex flex-col sm:flex-row items-center sm:items-end justify-between gap-6">
-        <div className="text-center sm:text-left">
-          <p className="text-white text-sm font-semibold mb-2">Get in touch</p>
-          <div className="flex flex-col gap-1 text-sm">
-            <a href={`mailto:${profile.email}`} className="text-muted hover:text-accent-400 transition-colors">
-              {profile.email}
-            </a>
-            <a href={profile.phone.href} className="text-muted hover:text-accent-400 transition-colors">
+    <footer id="contact" className="frame pt-[clamp(56px,6vw,88px)]">
+      <div className="grid-12 gap-y-8">
+        <h2 data-reveal className="heading col-span-12 lg:col-span-3">
+          Contact
+        </h2>
+        <div className="col-span-12 lg:col-[4/span_9] min-w-0">
+          <a
+            data-reveal
+            href={`mailto:${profile.email}`}
+            className="press block w-fit text-display tracking-[-0.035em] transition-colors duration-200 hover:text-accent"
+          >
+            <span className="block sm:inline">{user}@</span>
+            <span className="block sm:inline">{domain}</span>
+          </a>
+          <div
+            data-reveal
+            style={{ "--i": 1 } as React.CSSProperties}
+            className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-body"
+          >
+            <a href={profile.phone.href} className="link press tabular">
               {profile.phone.display}
             </a>
-          </div>
-        </div>
-        <div className="flex flex-col items-center sm:items-end gap-3">
-          <div className="flex gap-5">
-            <a
-              href={profile.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-              className="text-subtle hover:text-fg transition-colors"
-            >
-              <GithubIcon />
+            <a href={profile.github} target="_blank" rel="noopener noreferrer" className="link press">
+              GitHub
             </a>
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="text-subtle hover:text-fg transition-colors"
-            >
-              <LinkedInIcon />
+            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="link press">
+              LinkedIn
             </a>
-            <a
-              href={`mailto:${profile.email}`}
-              aria-label="Email"
-              className="text-subtle hover:text-fg transition-colors"
-            >
-              <MailIcon />
+            <a href={profile.resume} download className="link press">
+              Resume (PDF)
             </a>
           </div>
-          <p className="text-subtle text-sm">© 2026 {profile.name}</p>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-2 sm:gap-6 py-8 mt-[clamp(80px,12vw,160px)] text-small text-muted">
+        <p>
+          {profile.name}, {profile.title}
+        </p>
+        <a href="#top" className="link press text-ink w-fit">
+          Back to top
+        </a>
+        <p className="sm:text-right">© 2026 {profile.name}</p>
       </div>
     </footer>
   );

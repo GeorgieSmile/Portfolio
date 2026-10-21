@@ -1,44 +1,68 @@
-import { jobs } from "@/data/profile";
-import { BulletList, CardHeader, Section, Tags } from "@/components/ui";
+import { jobs, type KeyResult } from "@/data/profile";
+import { BulletList, Section, Split } from "@/components/ui";
+
+// Results set like a ledger: each figure split at its decimal point so the points line up,
+// at heading size so the section heading still leads. Shown after the purpose, before the bullets.
+function Ledger({ results, note }: { results: KeyResult[]; note?: string }) {
+  return (
+    <div className="mb-12">
+      <h4 className="text-lead">Key results against each baseline</h4>
+      {note && <p className="text-body text-muted mt-2 max-w-[62ch]">{note}</p>}
+      <dl className="grid grid-cols-[auto_auto_1fr] gap-x-[0.1em] gap-y-16 sm:gap-y-8 items-baseline mt-8">
+        {results.map((r) => {
+          const [whole, decimals = ""] = r.after.split(".");
+          return (
+            <div key={`${r.system}-${r.metric}`} className="col-span-3 grid grid-cols-subgrid items-baseline gap-y-1">
+              <dt className="sr-only">
+                {r.metric}, {r.system}
+              </dt>
+              <dd className="contents">
+                <span className="heading tabular text-right">{whole}</span>
+                <span className="heading tabular">{decimals && `.${decimals}`}</span>
+                <span className="col-span-3 sm:col-span-1 sm:pl-6">
+                  <span className="block text-body">
+                    {r.metric} · {r.system}
+                  </span>
+                  <span className="block text-small text-muted mt-1">
+                    <span className="sm:hidden">{r.vs}</span>
+                    <span className="hidden sm:inline">{r.evaluated}</span>: {r.before} → {r.after}, {r.reduction}
+                  </span>
+                </span>
+              </dd>
+            </div>
+          );
+        })}
+      </dl>
+    </div>
+  );
+}
 
 export default function Experience() {
   return (
     <Section id="experience" title="Experience">
-      {/* Timeline: a rail on the left with one dot per role; the current role's dot is filled */}
-      <ol className="relative border-l border-line ml-1.5 space-y-14">
+      <ol className="flex flex-col gap-16">
         {jobs.map((job) => (
-          <li key={job.company} className="relative pl-6 sm:pl-10">
-            <span
-              aria-hidden
-              className={`absolute -left-[7px] top-1.5 w-3 h-3 rounded-full ${
-                job.date.includes("Present")
-                  ? "bg-accent-500 ring-4 ring-accent-500/15"
-                  : "bg-canvas border-2 border-accent-500/70"
-              }`}
-            />
-            <CardHeader title={job.title} subtitle={job.company} date={job.date} />
-            {job.tags && <Tags items={job.tags} className="mb-5" />}
-
-            {job.keyResults && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-5">
-                {job.keyResults.map((r) => (
-                  <div key={`${r.system}-${r.metric}`} className="bg-raised rounded-lg p-3 sm:p-4 border border-line flex flex-col">
-                    <p className="text-accent-400/90 text-xs font-medium mb-0.5">{r.system}</p>
-                    <p className="text-subtle text-xs mb-1 sm:hidden">{r.vs}</p>
-                    <p className="text-subtle text-xs mb-1 hidden sm:block">{r.evaluated}</p>
-                    <p className="text-white text-sm font-semibold mb-2">{r.metric}</p>
-                    <div className="flex items-center gap-2 mt-auto">
-                      <span className="font-mono text-subtle text-lg font-semibold">{r.before}</span>
-                      <span className="text-faint text-sm">→</span>
-                      <span className="font-mono text-accent-400 text-lg font-semibold">{r.after}</span>
-                    </div>
-                    <p className="text-accent-300 text-xs mt-1">{r.reduction}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <BulletList items={job.bullets} />
+          <li key={job.company}>
+            <Split
+              side={
+                <>
+                  <h3 className="text-lead">{job.title}</h3>
+                  <p className="text-body mt-1">{job.company}</p>
+                  <p className="text-small text-muted mt-2 tabular">{job.date}</p>
+                  {job.tags && <p className="text-small text-muted mt-4">{job.tags.join(", ")}</p>}
+                </>
+              }
+            >
+              <p className="text-lead max-w-[48ch] mb-10">{job.summary}</p>
+              {job.keyResults && <Ledger results={job.keyResults} note={job.keyResultsNote} />}
+              {job.bullets && <BulletList items={job.bullets} />}
+              {job.bulletGroups?.map((group) => (
+                <div key={group.label} className="mt-8 first:mt-0">
+                  <h5 className="text-body font-medium mb-3">{group.label}</h5>
+                  <BulletList items={group.bullets} />
+                </div>
+              ))}
+            </Split>
           </li>
         ))}
       </ol>
