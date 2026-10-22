@@ -48,6 +48,16 @@ export function Split({ side, children, className = "" }: { side: ReactNode; chi
   );
 }
 
+// Two related blocks side by side from 1440px, both starting at the same top edge; stacked below, in the
+// same order. One rule for every entry, so nothing sits ragged left or right.
+export function Pair({ children }: { children: ReactNode }) {
+  return (
+    <div className="grid gap-12 min-[1440px]:grid-cols-2 min-[1440px]:items-start min-[1440px]:gap-x-[var(--gutter)]">
+      {children}
+    </div>
+  );
+}
+
 export function BulletList({ items, className = "" }: { items: string[]; className?: string }) {
   return (
     <ul className={`list-disc pl-5 marker:text-muted space-y-3 text-body max-w-[62ch] ${className}`}>
@@ -61,9 +71,11 @@ export function BulletList({ items, className = "" }: { items: string[]; classNa
 }
 
 // Shows the first `visible` bullets; the rest open with a native <details> toggle (no JS).
+// A single leftover bullet is shown too: a toggle for one line costs as much space as the line.
 export function ExpandableBullets({ items, visible }: { items: string[]; visible: number }) {
-  const shown = items.slice(0, visible);
-  const hidden = items.slice(visible);
+  const cut = items.length - visible > 1 ? visible : items.length;
+  const shown = items.slice(0, cut);
+  const hidden = items.slice(cut);
   return (
     <>
       <BulletList items={shown} />

@@ -52,7 +52,9 @@ Runs the checks for the WAV waveform reader in `lib/` with Node's built-in test 
 ```
 app/              # Next.js app router: layout, page, favicon (icon.tsx), social preview image
 components/       # One component per page section (Hero, Experience, Projects, ...)
-  ui.tsx          # Shared building blocks: Section, Split, BulletList, WaveformSvg, ...
+  ui.tsx          # Shared building blocks: Section, Split, Pair, BulletList, ExpandableBullets, WaveformSvg, ...
+  charts.tsx      # Result bars, benchmark comparison, score bars and the human-judgment vote bars
+  Pipeline.tsx    # Flow diagrams, read top to bottom
   Reveal.tsx      # Section entrances on scroll
 data/profile.ts   # All site content (text, links, metrics)
 lib/waveform.ts   # Reads the demo WAVs at build time for the waveform drawings (tested in waveform.test.mjs)
@@ -60,6 +62,7 @@ docs/             # README screenshot
 public/           # Static assets
   audio/          # Voice cloning demo samples
   super-ai/       # Super AI Engineer winning-team photos
+  projects/       # Project screenshots
 ```
 
 ## Updating content
@@ -68,11 +71,11 @@ public/           # Static assets
 |---|---|
 | Name, title, tagline, contact links | `profile` in `data/profile.ts` |
 | Hero proof points | `profile.highlights` (the Now / Before / Degree facts are built from `jobs` and `education`) |
-| Work experience and key results | `jobs` (`summary`, `keyResults` + `keyResultsNote`, then `bullets` or labelled `bulletGroups`) |
+| Work experience and key results | `jobs` (`summary`, `keyResults` + `keyResultsNote`, optional `benchmark` comparison and `pipeline` diagram, then `bullets` or labelled `bulletGroups`; `id` for links straight to a job) |
 | Voice demo samples | `voiceDemo` (incl. the listening `instruction`) + 16-bit PCM WAV files in `public/audio/` |
-| Projects, incl. how it works and results | `projects` (`summary`, `results` + `resultsNote`, `pipeline`) |
+| Projects, incl. how it works and results | `projects` (`summary`, `results` + `resultsNote`, `pipeline`, `screenshots` + files in `public/projects/`, `link` or `linkNote` when the code is private) |
 | Super AI highlights and photos | `superAI` (`highlights`, `photos`) + files in `public/super-ai/` |
-| Research, other hackathons, skills, education | matching export in `data/profile.ts` |
+| Research (incl. the human-judgment chart, `publication.humanEval`), other hackathons, skills, education | matching export in `data/profile.ts` |
 | Colours and type sizes | `--color-*` and `--text-*` in `app/globals.css` (accent: `--color-accent`, `--color-accent-strong`); `app/icon.tsx` and `app/opengraph-image.tsx` repeat the hex values |
 | Fonts | `app/layout.tsx` |
 | Resume file | replace `public/Resume_NithidGuntasin.pdf` |

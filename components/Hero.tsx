@@ -5,11 +5,12 @@ import { education, jobs, profile } from "@/data/profile";
 const facts = [
   { label: "Now", value: `${jobs[0].title}, ${jobs[0].company}` },
   { label: "Before", value: `${jobs[1].title}, ${jobs[1].company}` },
-  { label: "Degree", value: `${education.degree}, ${education.school} · ${education.badges.join(", ")}` },
+  { label: "Degree", value: `${education.degree}, ${education.schoolShort} · ${education.badges.join(", ")}` },
 ];
 
 // Read top to bottom on the left: who, what, where they work now, then the proof. The portrait on the right;
-// on phones it comes first, small and on the text edge, so the face leads there too.
+// on phones it comes first, small and on the text edge, so the face leads there too, and the proof comes
+// before the work facts so it is on the first screen.
 export default function Hero() {
   return (
     <section
@@ -32,19 +33,6 @@ export default function Hero() {
         {profile.tagline}
       </p>
 
-      <dl
-        data-enter
-        style={{ "--i": 2 } as React.CSSProperties}
-        className="grid sm:grid-cols-3 gap-x-[var(--gutter)] gap-y-5 md:col-span-12 md:row-[4] lg:col-[1/span_7] lg:row-[3] md:mt-10"
-      >
-        {facts.map((f) => (
-          <div key={f.label}>
-            <dt className="text-small text-muted">{f.label}</dt>
-            <dd className="text-body mt-1">{f.value}</dd>
-          </div>
-        ))}
-      </dl>
-
       <ul
         data-enter
         style={{ "--i": 3 } as React.CSSProperties}
@@ -59,6 +47,21 @@ export default function Hero() {
           </li>
         ))}
       </ul>
+
+      {/* After the proof in the source, so phones (one column, source order) show it on the first screen;
+          from md the grid rows put the facts back above the proof */}
+      <dl
+        data-enter
+        style={{ "--i": 2 } as React.CSSProperties}
+        className="grid sm:grid-cols-3 gap-x-[var(--gutter)] gap-y-5 md:col-span-12 md:row-[4] lg:col-[1/span_7] lg:row-[3] md:mt-10"
+      >
+        {facts.map((f) => (
+          <div key={f.label}>
+            <dt className="text-small text-muted">{f.label}</dt>
+            <dd className="text-body mt-1">{f.value}</dd>
+          </div>
+        ))}
+      </dl>
 
       <div
         data-enter

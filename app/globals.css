@@ -15,6 +15,11 @@
   --color-accent: #5a9bfc;
   --color-accent-strong: #7db1fd;
   --color-accent-ink: #0a0d14;
+  /* Charts and diagrams: two greys stepped down from the accent (both at least 3:1 on --color-bg),
+     and the hairline for boxes and empty bar tracks */
+  --color-quiet: #7b8496;
+  --color-faint: #5c6577;
+  --color-rule: #262d3b;
 
   /* Five type steps: small, body, lead, head, display */
   --text-small: 0.875rem;
@@ -61,8 +66,11 @@ body {
   outline-offset: 3px;
 }
 
-/* The page frame: equal margins, a 12-column grid inside them */
+/* The page frame: equal margins, a 12-column grid inside them. Capped so a wide window adds even
+   margins on both sides instead of an empty band right of the 62ch text. */
 .frame {
+  max-width: 1600px;
+  margin-inline: auto;
   padding-inline: var(--margin);
 }
 @utility grid-12 {

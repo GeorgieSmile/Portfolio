@@ -1,14 +1,14 @@
 import { voiceDemo, type VoiceSample } from "@/data/profile";
 import { readWaveform } from "@/lib/waveform";
-import { Section, Split, WaveformSvg } from "@/components/ui";
+import { Section, WaveformSvg } from "@/components/ui";
 import OneAudioAtATime from "@/components/OneAudioAtATime";
 
-// Input against output: the reference voice in the narrow column, the two clones of it in the wide one,
-// each drawn from its own audio.
+// Input then output, at equal widths so the waveforms compare like for like, each drawn from its own audio.
+// From xl each clip spans four shared rows (title, waveform, text, player), so they line up across columns.
 function Specimen({ sample }: { sample: VoiceSample }) {
   const { peaks } = readWaveform(sample.src, 96);
   return (
-    <figure className="flex flex-col gap-4">
+    <figure data-reveal className="flex flex-col gap-4 xl:row-span-4 xl:grid xl:grid-rows-subgrid">
       <figcaption>
         <h3 className="text-lead">{sample.label}</h3>
         <p className="text-small text-muted mt-1">{sample.description}</p>
@@ -17,10 +17,13 @@ function Specimen({ sample }: { sample: VoiceSample }) {
         peaks={peaks}
         className={`w-full h-[clamp(72px,6vw,96px)] ${sample.accent ? "text-ink" : "text-muted"}`}
       />
-      {sample.targetText && (
+      {/* The reference has no script; the empty slot keeps its player level with the others */}
+      {sample.targetText ? (
         <p lang="th" className="text-body max-w-[48ch]">
           {sample.targetText}
         </p>
+      ) : (
+        <span aria-hidden className="hidden xl:block" />
       )}
       <audio controls preload="metadata" src={sample.src} />
     </figure>
@@ -28,7 +31,6 @@ function Specimen({ sample }: { sample: VoiceSample }) {
 }
 
 export default function AudioSamples() {
-  const [reference, ...clones] = voiceDemo.samples;
   return (
     <Section
       id="audio"
@@ -40,13 +42,11 @@ export default function AudioSamples() {
         </>
       }
     >
-      <Split side={<Specimen sample={reference} />}>
-        <div className="flex flex-col gap-12">
-          {clones.map((s) => (
-            <Specimen key={s.src} sample={s} />
-          ))}
-        </div>
-      </Split>
+      <div className="grid gap-y-12 xl:grid-cols-3 xl:gap-x-[var(--gutter)] xl:gap-y-4">
+        {voiceDemo.samples.map((s) => (
+          <Specimen key={s.src} sample={s} />
+        ))}
+      </div>
       <OneAudioAtATime />
     </Section>
   );

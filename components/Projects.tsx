@@ -1,62 +1,65 @@
+import Image from "next/image";
 import { projects } from "@/data/profile";
-import { ExpandableBullets, Section, Split, TextLink } from "@/components/ui";
+import { ExpandableBullets, Pair, Section, TextLink } from "@/components/ui";
+import { ScoreBars } from "@/components/charts";
+import { Pipeline } from "@/components/Pipeline";
 
-// Each project: what it is on the left; what it is for, what it scored, how it works and what was done on the right.
+// Each project reads top to bottom from one left edge, like a job: what it is and what it is for,
+// what it scored beside how it works, what it looks like, then what was done (the rest opens on request).
 export default function Projects() {
   return (
     <Section id="projects" title="Projects">
-      <div className="flex flex-col gap-16">
+      <div className="flex flex-col gap-24">
         {projects.map((project) => (
-          <Split
-            key={project.title}
-            side={
-              <>
-                <h3 className="text-lead">{project.title}</h3>
-                {project.role && <p className="text-body mt-1">{project.role}</p>}
-                <p className="text-small text-muted mt-2 tabular">{project.date}</p>
-                <p className="text-small text-muted mt-4">{project.tags.join(", ")}</p>
-              </>
-            }
-          >
-            <p className="text-lead max-w-[48ch] mb-10">{project.summary}</p>
-            {(project.pipeline || project.results) && (
-              <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-x-[var(--gutter)] gap-y-8 mb-10">
-                {project.results && (
-                  <div>
-                    <h4 className="text-body text-muted mb-2">Results</h4>
-                    <dl className="text-body">
-                      {project.results.map((r) => (
-                        <div key={r.label} className="flex justify-between gap-4 py-1">
-                          <dt>{r.label}</dt>
-                          <dd className="tabular">{r.value}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                    {project.resultsNote && <p className="text-small text-muted mt-3 max-w-[62ch]">{project.resultsNote}</p>}
-                  </div>
-                )}
-                {project.pipeline && (
-                  <div>
-                    <h4 className="text-body text-muted mb-2">How it works</h4>
-                    <ol className="text-body">
-                      {project.pipeline.map((s) => (
-                        <li key={s.tool} className="flex justify-between gap-4 py-1">
-                          <span>{s.tool}</span>
-                          <span className="text-muted text-right">{s.step}</span>
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
-                )}
+          <article key={project.title} className="flex flex-col gap-12">
+            <div data-reveal>
+              <h3 className="text-lead">{project.title}</h3>
+              <p className="text-body mt-1">
+                {project.role && `${project.role} · `}
+                <span className="text-muted tabular whitespace-nowrap">{project.date}</span>
+              </p>
+              <p className="text-small text-muted mt-2">{project.tags.join(", ")}</p>
+              <p className="text-lead max-w-[48ch] mt-6">{project.summary}</p>
+            </div>
+            {(project.results || project.pipeline) && (
+              <Pair>
+                {project.results && <ScoreBars stats={project.results} note={project.resultsNote} />}
+                {project.pipeline && <Pipeline steps={project.pipeline} label="How it works" />}
+              </Pair>
+            )}
+            {project.screenshots && (
+              <div data-reveal className="flex flex-col gap-6 max-w-[871px]">
+                {project.screenshots.map((shot) => (
+                  <figure key={shot.src}>
+                    {/* Opens at full size: the app's own text is small once scaled to a phone */}
+                    <a href={shot.src} target="_blank" rel="noopener noreferrer" className="block">
+                      <Image
+                        src={shot.src}
+                        alt={shot.alt}
+                        width={shot.width}
+                        height={shot.height}
+                        sizes="(min-width: 1024px) 871px, 100vw"
+                        className="w-full h-auto rounded-md"
+                      />
+                    </a>
+                    <figcaption className="text-small text-muted mt-2">
+                      {shot.caption}
+                      <span className="sm:hidden"> · Tap to enlarge</span>
+                    </figcaption>
+                  </figure>
+                ))}
               </div>
             )}
-            <ExpandableBullets items={project.bullets} visible={4} />
-            {project.link && (
-              <div className="mt-6">
-                <TextLink href={project.link.href}>{project.link.label}</TextLink>
-              </div>
-            )}
-          </Split>
+            <div data-reveal>
+              <ExpandableBullets items={project.bullets} visible={3} />
+              {project.link && (
+                <div className="mt-6">
+                  <TextLink href={project.link.href}>{project.link.label}</TextLink>
+                </div>
+              )}
+              {project.linkNote && <p className="text-small text-muted mt-6">{project.linkNote}</p>}
+            </div>
+          </article>
         ))}
       </div>
     </Section>

@@ -11,7 +11,21 @@ export type KeyResult = {
   reduction: string;
 };
 
+// One step of a flow diagram: what it does and the tool or amount behind it.
+// The first step is drawn as the input and the last as the output.
+export type PipelineStep = { step: string; tool?: string };
+
+// A small-multiples comparison: each metric draws one bar per system, the first system accented
+export type Benchmark = {
+  title: string;
+  note: string;
+  systems: string[];
+  metrics: { label: string; unit: string; better: "lower" | "higher"; values: number[] }[];
+};
+
 export type Job = {
+  // Anchor for links straight to this job
+  id?: string;
   title: string;
   company: string;
   date: string;
@@ -21,6 +35,10 @@ export type Job = {
   keyResults?: KeyResult[];
   // Plain-language meaning of the key-result metrics
   keyResultsNote?: string;
+  // Optional comparison against other systems, shown after the key results
+  benchmark?: Benchmark;
+  // Optional flow diagram of the main system built, with its caption
+  pipeline?: { label: string; steps: PipelineStep[] };
   // Either one list, or the same kind of bullets split into labelled groups
   bullets?: string[];
   bulletGroups?: { label: string; bullets: string[] }[];
@@ -35,14 +53,19 @@ export type Project = {
   // One plain sentence on what the project does, shown before the results
   summary: string;
   tags: string[];
-  // The first 4 are always shown; any extra sit behind "Show more"
+  // The first 3 are always shown; any extra sit behind "Show more"
   bullets: string[];
   link?: Link;
+  // Shown instead of a link when there is nothing public to link to
+  linkNote?: string;
   // Optional flow diagram: each step's tool and what it does
-  pipeline?: { tool: string; step: string }[];
+  pipeline?: PipelineStep[];
+  // Values between 0 and 1 are drawn as bars on a 0–1 scale; anything else (a cost) is shown as text
   results?: Stat[];
   // Plain-language meaning of the result labels
   resultsNote?: string;
+  // A sequence (e.g. a question, then its answer), shown in order
+  screenshots?: (Image & { caption: string; width: number; height: number })[];
 };
 
 export type Image = { src: string; alt: string };
@@ -69,10 +92,10 @@ export const profile = {
   name: "Nithid Guntasin",
   title: "AI Engineer",
   tagline:
-    "Building end-to-end ML systems for Thai speech and text, from data pipelines and model fine-tuning to LLM/RAG applications and evaluation.",
+    "I build Thai text-to-speech models and chatbots that answer from documents, from collecting the training data to measuring the results.",
   // Proof points under the hero tagline; each links to the section with the details
   highlights: [
-    { value: "44% → 2.75%", label: "Thai text-to-speech error rate (CER), lower is better", href: "#experience" },
+    { value: "44% → 2.8%", label: "Thai text-to-speech error rate (CER), lower is better", href: "#jasmine" },
     { value: "JaiTTS", label: "Co-author · arXiv 2026", href: "#publication" },
     { value: "▶ Listen", label: "Thai voice cloning demo", href: "#audio" },
   ],
@@ -100,25 +123,38 @@ export const jobs: Job[] = [
     ],
   },
   {
+    id: "jasmine",
     title: "AI Engineer Intern",
     company: "Jasmine Technology Solution",
     date: "Jan 2026 – May 2026",
     summary: "Thai text-to-speech (TTS): built the training data and fine-tuned the models that turn Thai text into spoken Thai.",
-    tags: ["MOSS-TTS", "F5-TTS", "XLM-RoBERTa", "Whisper", "vLLM", "DiariZen", "Silero VAD", "yt-dlp"],
+    tags: ["MOSS-TTS", "F5-TTS", "XLM-RoBERTa", "Typhoon Whisper", "Gemma 4", "vLLM", "DiariZen", "Silero VAD", "yt-dlp"],
+    pipeline: {
+      label: "How the training data was built",
+      steps: [
+        { tool: "~1,000 hours from YouTube", step: "Raw audio" },
+        { tool: "MossFormer2", step: "Speech enhancement" },
+        { tool: "DiariZen (WavLM-Large), Silero VAD", step: "Diarization & segmentation" },
+        { tool: "DNSMOS, AudioBox", step: "Quality filtering" },
+        { tool: "Typhoon Whisper, Gemma 4 on vLLM", step: "Transcription & cleaning" },
+        { tool: "WavLM, ECAPA-TDNN", step: "Speaker-matched prompt pairing" },
+        { tool: "~400 hours kept, plus 150 hours of company data", step: "Dataset assembly" },
+        { tool: "550 hours", step: "Training set" },
+      ],
+    },
     bulletGroups: [
       {
         label: "Building the training data",
         bullets: [
-          "Built a 6-stage Thai TTS data pipeline that turned 800+ hours of raw audio into a 550-hour training set, covering speech enhancement, diarization and segmentation, quality filtering, transcription and cleaning, speaker-matched prompt pairing, and dataset assembly",
-          "Integrated MossFormer2, DiariZen, Silero VAD, DNSMOS/AudioBox, Whisper, vLLM, and WavLM/ECAPA-TDNN models across the pipeline stages",
+          "Built the 6-stage pipeline shown here, which turned about 1,000 hours of raw YouTube audio into about 400 hours of clean, transcribed speech; with 150 hours of company data, that made the 550-hour training set",
           "Developed a YouTube channel audio downloader with yt-dlp, adding resume support, rate limiting, and FLAC export so it could run unattended for large-scale Thai speech collection",
         ],
       },
       {
         label: "Training the models",
         bullets: [
-          "Fine-tuned MOSS-TTS (1.7B, no prior Thai support) on the 550-hour set",
-          "Trained an XLM-RoBERTa model to predict speech duration for F5-TTS, replacing a byte-count baseline",
+          "Fine-tuned MOSS-TTS Local (1.7B, not optimized for Thai) on the 550-hour set, choosing between checkpoints by CER, speaker similarity and blind listening tests",
+          "Trained an XLM-RoBERTa model on about 100,000 Thai and English clips to predict speech duration for F5-TTS, replacing a byte-count baseline; separate Thai and English models beat a single combined one",
         ],
       },
       {
@@ -129,7 +165,18 @@ export const jobs: Job[] = [
       },
     ],
     keyResultsNote:
-      "Lower is better for all three. CER (character error rate) is the share of characters the speech gets wrong; MAE is the average error, in seconds, of the predicted speech duration.",
+      "Lower is better for all three. CER (character error rate) is the share of characters the speech gets wrong, scored the Seed-TTS-eval way: Typhoon Whisper transcribes the speech, and Thai normalization rules clean both texts before they are compared. MAE is the average error, in seconds, of the predicted speech duration, measured on a 10,000-clip test set. Fine-tuned checkpoints were also compared in blind listening tests: 2 listeners, 20–30 clips per checkpoint.",
+    // From the internship report: the best checkpoint on the same test as OmniVoice and real recordings.
+    // Test size (~200+ clips) and the Seed-TTS-eval method are from Georgie, not the report.
+    benchmark: {
+      title: "Against a state-of-the-art model",
+      note: "My best checkpoint next to OmniVoice, a state-of-the-art multilingual TTS model, and real human recordings, on about 200 or more test clips. The two models are within about one point of each other on both measures, and the two listeners' blind preferences between them were closely matched. Speaker similarity is the cosine similarity of WavLM speaker embeddings between the speech and its reference clip; real recordings can score lower than cloned speech because each is a separate take, while a cloned clip is built from the reference itself.",
+      systems: ["My fine-tuned MOSS-TTS", "OmniVoice", "Real human recordings"],
+      metrics: [
+        { label: "CER", unit: "%", better: "lower", values: [2.775, 2.883, 1.978] },
+        { label: "Speaker similarity", unit: "%", better: "higher", values: [63.6, 64.6, 60.7] },
+      ],
+    },
     keyResults: [
       {
         metric: "CER",
@@ -137,7 +184,7 @@ export const jobs: Job[] = [
         evaluated: "Thai fine-tuned TTS model vs. Pretrained Model",
         vs: "vs. pretrained model",
         before: "44.01%",
-        after: "2.75%",
+        after: "2.775%",
         reduction: "↓ 93.7% reduction",
       },
       {
@@ -155,8 +202,8 @@ export const jobs: Job[] = [
         evaluated: "Synthesis quality with duration predictor vs. Byte-counting Baseline",
         vs: "vs. byte-count baseline",
         before: "4.78%",
-        after: "4.32%",
-        reduction: "↓ 9.6% reduction",
+        after: "4.26%",
+        reduction: "↓ 10.9% reduction",
       },
     ],
   },
@@ -165,7 +212,7 @@ export const jobs: Job[] = [
 export const voiceDemo = {
   instruction: "Listen to the reference voice first, then the two clips the model generated in that same voice.",
   subtitle:
-    "Thai TTS — fine-tuned on 550 hours of speech data during internship at Jasmine Technology Solution",
+    "Generated by my fine-tuned MOSS-TTS Local 1.7B (best checkpoint), trained on 550 hours of Thai speech during my internship at Jasmine Technology Solution",
   samples: [
     {
       label: "Reference Voice",
@@ -200,10 +247,19 @@ export const publication = {
   me: "Guntasin, N.",
   authorsAfter: ", Denkavin, T., & Rutherford, A.T.",
   contributions: [
-    "Built the blind A/B listening-test app with Streamlit and SQLite, used for the paper's human evaluation: 20 native Thai raters compared randomized model pairs on naturalness and speaker similarity, with JaiTTS winning 283 of 400 comparisons against commercial models",
+    "Built the blind A/B listening-test app with Streamlit and SQLite behind this human evaluation, where raters compared randomized model pairs on naturalness and speaker similarity",
     "Added a password-protected admin dashboard reporting head-to-head win rates and Elo ratings, covered by pytest unit tests",
     "Co-created the paper's 231-case long-duration test set from YouTube with manually verified transcripts, and evaluated audio tokenizers and restoration models",
   ],
+  // Figure 2 of the paper: blind pairwise votes, 200 per commercial model
+  humanEval: {
+    title: "Human judgment against commercial models",
+    note: "20 native Thai raters each heard two clips without knowing the models and picked the better one. JaiTTS won 283 of 400 comparisons, tied 59 and lost 58.",
+    rows: [
+      { against: "ElevenLabs v3", wins: 161, ties: 19, losses: 20 },
+      { against: "MiniMax speech-2.8-hd", wins: 122, ties: 40, losses: 38 },
+    ],
+  },
   links: [
     { label: "arXiv:2604.27607", href: "https://arxiv.org/abs/2604.27607" },
     { label: "GitHub", href: "https://github.com/JTS-AI-Team/JaiTTS" },
@@ -214,6 +270,7 @@ export const projects: Project[] = [
   {
     title: "Scrybe: RAG Academic Chatbot",
     role: "Senior Project · Data & AI Lead (team of 4)",
+    linkNote: "The code is not public (university senior project).",
     date: "Aug – Dec 2025",
     summary: "A chatbot that answers students' questions using SIIT web pages and staff-provided FAQs across 7 support domains.",
     tags: ["RAG", "n8n", "Pinecone", "Cohere Rerank", "Gemini 2.5 Flash", "Claude Haiku 4.5"],
@@ -226,19 +283,35 @@ export const projects: Project[] = [
     ],
     results: [
       { value: "0.93", label: "Retrieval recall@3" },
+      { value: "0.76", label: "Retrieval precision@3" },
       { value: "0.93", label: "Faithfulness (LLM-judged)" },
-      { value: "0.82", label: "Helpfulness (0–1) · 20 students" },
-      { value: "฿0.50", label: "LLM cost per query" },
+      { value: "0.82", label: "Helpfulness · 20 students" },
+      { value: "฿0.50", label: "LLM cost per query (about $0.014, Claude Haiku 4.5)" },
+    ],
+    screenshots: [
+      {
+        src: "/projects/scrybe-question.png",
+        alt: "Scrybe's chat window with a student's question: “What do I have to do while doing internship?”",
+        caption: "The question",
+        width: 871,
+        height: 222,
+      },
+      {
+        src: "/projects/scrybe-answer-redacted.png",
+        alt: "Scrybe's answer: faculty members may visit during training; after training, submit the final report via Google Classroom while the supervisor emails the evaluation form and time sheet (the address is blurred); accept the first company offer and follow the company's regular working hours; then an offer to clarify further",
+        caption: "Most of the answer, drawn from SIIT's own documents",
+        width: 871,
+        height: 592,
+      },
     ],
     resultsNote:
-      "Recall@3: how often the right passage is among the top 3 retrieved. Faithfulness: how closely an answer sticks to those passages, scored by an LLM judge. The first three are on a 0–1 scale, higher is better.",
+      "All four scores run from 0 to 1, higher is better. Recall@3: how often the right passage is among the top 3 retrieved; precision@3: how many of those 3 are relevant. Both are computed by script against test questions tagged with their correct passages. Faithfulness: how closely an answer sticks to those passages, scored by one LLM judge. Helpfulness: 20 students rated answers to 15 questions from 1 to 5, scaled to 0–1.",
     bullets: [
       "Gathered requirements from students and staff, using their feedback to shape the chatbot's features",
       "Owned the knowledge-base ingestion: cleaned, chunked, embedded, and indexed SIIT web pages and staff-provided FAQs across 7 support domains in Pinecone, with domain metadata on every chunk",
       "Designed and tested the n8n RAG workflow: Gemini 2.5 Flash classifies the query domain to guide retrieval, Pinecone retrieves candidate chunks, Cohere reranks them, and Claude Haiku 4.5 generates answers grounded in the top passages",
-      "Evaluated the system: 0.93 recall@3 and 0.76 precision@3; LLM-judged faithfulness 0.93 and correctness 0.92",
-      "Collected user ratings on a 0–1 scale: 20 students rated helpfulness 0.82 and correctness 0.85; 2 staff members rated helpfulness 0.98 and correctness 0.86",
-      "Estimated LLM generation cost at about $0.014 (0.50 THB) per query with Claude Haiku 4.5",
+      "Evaluated retrieval by script and answer quality with an LLM judge, which also rated correctness at 0.92",
+      "Collected user ratings: students rated correctness 0.85, and 2 staff members rated helpfulness 0.98 and correctness 0.86",
     ],
   },
   {
@@ -336,6 +409,8 @@ export const skillGroups = [
 
 export const education = {
   school: "Sirindhorn International Institute of Technology",
+  // Used where space is short (the hero)
+  schoolShort: "SIIT",
   degree: "B.Eng. Computer Engineering",
   date: "Aug 2022 – May 2026",
   badges: ["GPA 3.65 / 4.00", "First Class Honors"],

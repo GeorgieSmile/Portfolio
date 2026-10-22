@@ -15,8 +15,8 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <AudioSamples />
         <Experience />
+        <AudioSamples />
         <Publication />
         <Projects />
         <Achievements />

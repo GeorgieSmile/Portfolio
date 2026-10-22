@@ -5,8 +5,8 @@ import { profile } from "@/data/profile";
 
 // In page order, one link per section
 const links = [
-  { label: "Demo", href: "#audio" },
   { label: "Experience", href: "#experience" },
+  { label: "Demo", href: "#audio" },
   { label: "Research", href: "#publication" },
   { label: "Projects", href: "#projects" },
   { label: "Achievements", href: "#achievements" },
