@@ -2,7 +2,7 @@
 
 Personal portfolio site for an AI Engineer working on Thai speech and text. Built with Next.js and Tailwind CSS.
 
-**Live site:** [portfolio-topaz-kappa-94.vercel.app](https://portfolio-topaz-kappa-94.vercel.app/)
+**Live site:** [nithid-guntasin.vercel.app](https://nithid-guntasin.vercel.app/)
 
 ![Portfolio hero section](docs/screenshot.png)
 

@@ -99,7 +99,7 @@ export const profile = {
     { value: "JaiTTS", label: "Co-author · arXiv 2026", href: "#publication" },
     { value: "▶ Listen", label: "Thai voice cloning demo", href: "#audio" },
   ],
-  siteUrl: "https://portfolio-topaz-kappa-94.vercel.app",
+  siteUrl: "https://nithid-guntasin.vercel.app",
   photo: "/photo.jpg",
   resume: "/Resume_NithidGuntasin.pdf",
   github: "https://github.com/GeorgieSmile",
