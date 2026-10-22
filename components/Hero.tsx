@@ -8,7 +8,8 @@ const facts = [
   { label: "Degree", value: `${education.degree}, ${education.school} · ${education.badges.join(", ")}` },
 ];
 
-// Read top to bottom on the left: who, what, where they work now, then the proof. The portrait on the right.
+// Read top to bottom on the left: who, what, where they work now, then the proof. The portrait on the right;
+// on phones it comes first, small and on the text edge, so the face leads there too.
 export default function Hero() {
   return (
     <section
@@ -62,14 +63,14 @@ export default function Hero() {
       <div
         data-enter
         style={{ "--i": 4 } as React.CSSProperties}
-        className="relative w-[52%] ml-auto md:w-auto md:ml-0 md:col-[8/span_5] md:row-[1/4] lg:row-[1/6] md:self-start aspect-[3/4] md:max-h-[80svh] overflow-hidden"
+        className="relative order-first md:order-none w-[40%] md:w-auto md:col-[8/span_5] md:row-[1/4] lg:row-[1/6] md:self-start aspect-[3/4] md:max-h-[80svh] overflow-hidden"
       >
         <Image
           src={profile.photo}
           alt={profile.name}
           fill
           preload
-          sizes="(min-width: 768px) 40vw, 52vw"
+          sizes="40vw"
           className="drift object-cover object-[center_22%]"
         />
       </div>
